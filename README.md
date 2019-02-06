@@ -61,6 +61,7 @@ Parameters
 
 
 ## CleanPy and Python's Ecosystem
+Sometimes it can get quite annoying dealing with data, so it is always nice to get some information about a quick summary of the data. 
 
 ## Installation
 *Will be developed next milestone*
