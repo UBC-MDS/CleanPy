@@ -2,7 +2,56 @@
 
 
 ## Functions & Test Cases
-**Function 1)**
+**Function 1)** Summary statistics generator for text and integer data from dataframes.
+Def summary(input_df, zero_include=TRUE):
+```
+   Parameters
+    ----------
+    input_df : dataframe
+        This is the dataframe that the function will use to provide summary statistics of each column in the data frame. It will determine the main data type of the column by calculated the type of each row entry in the column, and using the most frequent data type as the expected input for that column. It will perform two different summary statistics based on 2 different groups of datatypes of either 1) string or 2) int/float. For number columns it returns a dictionary of summary statistics including mean value for each column, min, max, count (number of non NA values per column) and count_NA (number of NA values per column). Similarly, for string columns it returns the unique string values and their counts in a dictionary. It will also provide a count of NA values which will include empty strings, and anything other than the correct data type for each column. The column names are the keys, and 
+ .
+
+    Returns
+    -------
+    Summary table of each columns summary statistics
+    
+    >>> summary(pd.DataFrame(colnames=”Likes coding”, rows= np.array([[4,3,2, 2])))
+       pd.DataFrame(col1, values=
+       min= 2
+       max= 4
+       mean= 11/4
+       median= 2
+       count=4
+       count_NA=0
+       	
+   """
+
+Dataframe %>%
+For colname in dataframe[columns]:
+If column data type is string: 
+summarise(unique(n),
+    count=  ) countvectorizer or output word cloud
+df= 
+Elseif column data type is float or int:
+summarise(total.count=n(),
+  count=sum(is.na(colname)),
+  avg.col[i]=mean(colname,na.rm=TRUE),
+  max.col[i]=max(colname, na.rm=TRUE)
+  Min =
+  Median =
+  df=
+Return multiple data frames 
+
+Test cases: 
+1) The input data must be a dataframe. Otherwise, the function will return an error message “input_df must be a dataframe”
+Data columns should have one datatype. If datatype is mostly strings, return summary statistics for strings. 
+2) If datatype is mostly numbers, return summary statistics for numbers 
+3) If all columns are floats, return summary statistics with floats
+4) If all columns are integers, return summary statistics with integers
+5) If some columns are integers, and some are floats, return summary statistics using each columns data type
+6) If one column has a mixture of data types (strings, floats or ints) return summary statistics by converting all entries into the predominant datatype
+7) If a column contains any entries that are not of the type string float or int, return error message “This function only handles strings, floats and integer data types”
+
 
 
 **Function 2)** `locate_na`: Returns a dataframe of the count and indices of NA values.  This function takes in a dataframe and finds NA values and returns the location of these values along the count of total NAs.
