@@ -2,14 +2,14 @@
 
 
 ## Functions & Test Cases
-**Function 1)** Summary statistics generator for text and integer data from dataframes.
-Def summary(input_df, zero_include=TRUE):
+**Function 1)** `summary`: Summary statistics generator for string and numeric data from dataframes.
 ```
+def summary(data, zero_include=TRUE):
+"""
    Parameters
     ----------
-    input_df : dataframe
-        This is the dataframe that the function will use to provide summary statistics of each column in the data frame. It will determine the main data type of the column by calculated the type of each row entry in the column, and using the most frequent data type as the expected input for that column. It will perform two different summary statistics based on 2 different groups of datatypes of either 1) string or 2) int/float. For number columns it returns a dictionary of summary statistics including mean value for each column, min, max, count (number of non NA values per column) and count_NA (number of NA values per column). Similarly, for string columns it returns the unique string values and their counts in a dictionary. It will also provide a count of NA values which will include empty strings, and anything other than the correct data type for each column. The column names are the keys, and 
- .
+    data : dataframe
+        This is the dataframe that the function will use to provide summary statistics of each column in the data frame. It will determine the main data type of the column by calculated the type of each row entry in the column, and using the most frequent data type as the expected input for that column. It will perform two different summary statistics based on 2 different groups of datatypes of either 1) string or 2) int/float. For number columns it returns a dictionary of summary statistics including mean value for each column, min, max, count (number of non NA values per column) and count_NA (number of NA values per column). Similarly, for string columns it returns the unique string values and their counts in a dictionary. It will also provide a count of NA values which will include empty strings, and anything other than the correct data type for each column. The column names are the keys.
 
     Returns
     -------
@@ -24,8 +24,10 @@ Def summary(input_df, zero_include=TRUE):
        count=4
        count_NA=0
        	
-   """
+"""
+```
 
+*Pseudo-code:*
 Dataframe %>%
 For colname in dataframe[columns]:
 If column data type is string: 
@@ -51,7 +53,6 @@ Data columns should have one datatype. If datatype is mostly strings, return sum
 5) If some columns are integers, and some are floats, return summary statistics using each columns data type
 6) If one column has a mixture of data types (strings, floats or ints) return summary statistics by converting all entries into the predominant datatype
 7) If a column contains any entries that are not of the type string float or int, return error message “This function only handles strings, floats and integer data types”
-
 
 
 **Function 2)** `locate_na`: Returns a dataframe of the count and indices of NA values.  This function takes in a dataframe and finds NA values and returns the location of these values along the count of total NAs.
@@ -84,14 +85,11 @@ def locate_na(input_df):
 **Function 3)** `replace_na`:Replaces missing NA values with either min, max, median, or average (default) values of the column(s). There will be an option to remove the rows with NAs.
 
 ```
-def replace_na(data replace=’min’, ‘max’, ‘median’, ‘average’, ‘remove’ , diff_columns=list of replace values in order of columns):
-
+def replace_na(data, replace=’min’, ‘max’, ‘median’, ‘average’, ‘remove’ , diff_columns=list of replace values in order of columns):
 """
-This function replaces na values with either the min, max, median or average value or removes the
-rows
+    This function replaces na values with either the min, max, median or average value or removes the rows.
 
-"""
-Parameters
+    Parameters
    ----------
    data : dataframe
       This is the dataframe that the function will use to replace NAs.
@@ -100,9 +98,9 @@ Parameters
    -------
    A list of tuples where each NAs will be replaced by either min, max, median or average.
    Each tuple in the list represents  the indices of a NA in the dataframe. 
-   >>> replace_na(pd.DataFrame(np.array([[“Yes”, “No”], [“”, “Yes”]])))
-   [(min, max, median, average)]
-  
+   
+   >>> replace_na(pd.DataFrame(np.array([[0, 1], [NA, 1]])))
+   pd.DataFrame(np.array([[0, 1], [0, 1]]))
 """
 ```
 
