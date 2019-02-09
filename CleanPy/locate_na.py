@@ -13,14 +13,14 @@ def locate_na(data):
         
     Returns
     -------
-    dictionary of lists
-        Each list in the dictionary represents a column and
-        holds the indices of missing values in the dataframe. 
+    dictionary of lists 
+        key = column indices that contain missing values
+        value = list of row indices that have missing values
         
-    >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”], [“”, “Yes”]])))
-    [(1, 0)]
-    >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”, “”], [“”, “Yes”, “Yes”]])))
-    [(0, 2), (1, 0)]
+    >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”], [None, “Yes”]])))
+    {"1": [0]}
+    >>> locate_na(pd.DataFrame(np.array([[1, 2, None], [None, 2, 3]])))
+    {"0": [2], "1": [0]}
     """
     
     return 
