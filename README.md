@@ -15,23 +15,23 @@ CleanPy is especially developed to create a streamlined process to give you an e
 ```
 def summary(data, zero_include=TRUE):
 """
-   Parameters
+    Parameters
     ----------
     data : dataframe
         This is the dataframe that the function will use to provide summary statistics of each column in the data frame. It will determine the main data type of the column by calculated the type of each row entry in the column, and using the most frequent data type as the expected input for that column. It will perform two different summary statistics based on 2 different groups of datatypes of either 1) string or 2) int/float. For number columns it returns a dictionary of summary statistics including mean value for each column, min, max, count (number of non NA values per column) and count_NA (number of NA values per column). Similarly, for string columns it returns the unique string values and their counts in a dictionary. It will also provide a count of NA values which will include empty strings, and anything other than the correct data type for each column. The column names are the keys.
-
+    
     Returns
     -------
     Summary table of each columns summary statistics
     
     >>> summary(pd.DataFrame(colnames=”Likes coding”, rows= np.array([[4,3,2, 2])))
-       pd.DataFrame(col1, values=
-       min= 2
-       max= 4
-       mean= 11/4
-       median= 2
-       count=4
-       count_NA=0
+    pd.DataFrame(col1, values=
+        min= 2
+        max= 4
+        mean= 11/4
+        median= 2
+        count=4
+        count_NA=0
 """
 ```
 
@@ -39,21 +39,27 @@ def summary(data, zero_include=TRUE):
 
 ```
 def locate_na(data):
-"""Locate and return the indices to all missing values within an inputted dataframe.
-   Parameters
-   ----------
-   data : dataframe
-      This is the dataframe that the function will use to locate NAs.
-      
-   Returns
-   -------
-   List of tuples
-   Each tuple in the list represents a the indices of a missing value in the dataframe. 
-   >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”], [“”, “Yes”]])))
-   [(1, 0)]
-   >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”, “”], [“”, “Yes”, “Yes”]])))
-   [(0, 2), (1, 0)]
-"""
+    """ 
+    Locate and return the indices to all missing values within an inputted dataframe. 
+    Each element of the returned dictionary will be a column in a dataframe, which will 
+    contain the row indices of the missing values.
+    
+    Parameters
+    ----------
+    data : dataframe
+        This is the dataframe that the function will use to locate NAs.
+        
+    Returns
+    -------
+    dictionary of lists
+        Each list in the dictionary represents a column and
+        holds the indices of missing values in the dataframe. 
+        
+    >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”], [“”, “Yes”]])))
+    [(1, 0)]
+    >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”, “”], [“”, “Yes”, “Yes”]])))
+    [(0, 2), (1, 0)]
+    """
 ```
 
 **Function 3)** `replace_na`:Replaces missing NA values with either min, max, median, or average (default) values of the column(s). There will be an option to remove the rows with NAs.
@@ -64,17 +70,17 @@ def replace_na(data, replace=’min’, ‘max’, ‘median’, ‘average’, 
     This function replaces na values with either the min, max, median or average value or removes the rows.
 
     Parameters
-   ----------
-   data : dataframe
-      This is the dataframe that the function will use to replace NAs.
-      
-   Returns
-   -------
-   A list of tuples where each NAs will be replaced by either min, max, median or average.
-   Each tuple in the list represents  the indices of a NA in the dataframe. 
-   
-   >>> replace_na(pd.DataFrame(np.array([[0, 1], [NA, 1]])))
-   pd.DataFrame(np.array([[0, 1], [0, 1]]))
+    ----------
+    data : dataframe
+        This is the dataframe that the function will use to replace NAs.
+        
+    Returns
+    -------
+    A list of tuples where each NAs will be replaced by either min, max, median or average.
+    Each tuple in the list represents the indices of a NA in the dataframe. 
+    
+    >>> replace_na(pd.DataFrame(np.array([[0, 1], [NA, 1]])))
+    pd.DataFrame(np.array([[0, 1], [0, 1]]))
 """
 ```
 
