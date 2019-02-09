@@ -13,4 +13,12 @@ input_df = pd.DataFrame({'x': [NA, "b", "c"], 'y': [2 ,NA,NA],
 # Return TypeError:"Input is not a dataframe" if the input is not a dataframe
 def test_correct_input():
     assert isinstance(input_df, pd.DataFrame)
+#Checks if the input has missing values, if it does not, then don't do anything
+def test_input_contains_missingvalues():
+  assert isinstance(input_df, pd.DataFrame)
+# Check if the whole input contains missing values, then it will 
+# throw an error saying, the input is not valid.
+def test_input_contains_all_missingvalues:
+  assert isinstance(input_df, pd.DataFrame)
+  
     
