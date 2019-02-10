@@ -1,4 +1,6 @@
-def replace_na(data, replace="average", remove=False, columns):
+#!/usr/bin/env python
+
+def replace_na(data, columns, replace="average", remove=False):
     """
     This function replaces NA values with either the min, max, median or average 
     value or removes the rows.

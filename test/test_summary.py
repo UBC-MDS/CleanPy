@@ -1,12 +1,3 @@
-#Test cases: 
-#The input data must be a dataframe. Otherwise, the function will return an error message “input_df must be a dataframe”
-#Data columns should have one datatype. If datatype is mostly strings, return summary statistics for strings. 
-#If datatype is mostly numbers, return summary statistics for numbers 
-#If all columns are numbers, return summary statistics with numbers
-#If some columns are integers, and some are floats, return summary statistics using each columns data type
-#If one column has a mixture of data types (strings, floats or ints) return summary statistics by converting all entries into the predominant datatype
-#If a column contains any entries that are not of the type string float or int, return error message “This function only handles strings, floats and integer data types”
-
 import pandas as pd
 import numpy as np
 import pytest
@@ -19,7 +10,6 @@ toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})
 toy_no_na = pd.DataFrame({"x":[1, 2, 3, 4], "y": [1, 2, 3, 4], "z": [1, 2, 3, 4]})
 
-The input data must be a dataframe. Otherwise, the function will return an error message “input_df must be a dataframe”
 def get_max_list(data):
     return max(len(v) for k, v in data.items())
 

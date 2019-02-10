@@ -55,6 +55,6 @@ def test_functionality():
     all_na_result = {"x":[0,1,2], "y":[0,1,2], "y":[0,1,2]}
     no_na_result = {}
     
-    assert cp.locate_na(toy_data) = toy_result
-    assert cp.locate_na(toy_all_na) = all_na_result
-    assert cp.locate_na(toy_no_na) = no_na_result
+    assert cp.locate_na(toy_data) == toy_result
+    assert cp.locate_na(toy_all_na) == all_na_result
+    assert cp.locate_na(toy_no_na) == no_na_result

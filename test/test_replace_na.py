@@ -7,8 +7,7 @@ sys.path.append("../CleanPy")
 import CleanPy as cp
 
 # Create test data frame
-input_df = pd.DataFrame({'x': [NA, "b", "c"], 'y': [2 ,NA,NA],
-                   'z': [3.6, 8.5,NA]})
+input_df = pd.DataFrame({'x': [None, "b", "c"], 'y': [2 ,None,None], 'z': [3.6, 8.5,None]})
 
 # Return TypeError:"Input is not a dataframe" if the input is not a dataframe
 def test_correct_input():
@@ -18,7 +17,7 @@ def test_input_contains_missingvalues():
   assert isinstance(input_df, pd.DataFrame)
 # Check if the whole input contains missing values, then it will 
 # throw an error saying, the input is not valid.
-def test_input_contains_all_missingvalues:
+def test_input_contains_all_missingvalues():
   assert isinstance(input_df, pd.DataFrame)
   
     
