@@ -31,9 +31,9 @@ def test_output_type():
     """
     Test that the output type must be a dictionary 
     """
-    assert type(cp.locate_na(toy_data)) == dict
-    assert type(cp.locate_na(toy_all_na)) == dict
-    assert type(cp.locate_na(toy_no_na)) == dict
+    assert isinstance(cp.locate_na(toy_data), dict)
+    assert isinstance(cp.locate_na(toy_all_na), dict)
+    assert isinstance(cp.locate_na(toy_no_na), dict)
     
 def test_output_shape():
     """
