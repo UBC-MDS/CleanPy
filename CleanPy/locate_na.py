@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import pandas as pd
+import numpy as np
+
 def locate_na(data):
     """ 
     Locate and return the indices to all missing values within an inputted dataframe. 
@@ -22,5 +25,29 @@ def locate_na(data):
     >>> locate_na(pd.DataFrame(np.array([[1, 2, None], [None, 2, 3]])))
     {"0": [2], "1": [0]}
     """
-    #just testing this out
-    return 
+    try:
+        if not isinstance(data, pd.DataFrame):
+            raise(TypeError)
+        col_na = {}
+        for i in data:
+            row_na = []
+            for j in range(len(data[i])):
+                if (pd.isna(data[i][j])):
+                    row_na.append(j)
+            if (len(row_na) != 0):
+                col_na[i] = row_na
+        if (len(col_na) == 0):
+            print("There are no missing values.")
+#             return None
+#         else:
+        return col_na
+    except TypeError:
+        print("Input data type is not of type pd.DataFrame.")
+        raise
+    except AttributeError:
+        print("Input data type is not of type pd.DataFrame.")
+        raise
+    except Exception as error:
+        print(error)
+        print("The locate_na function was not executed.")
+        raise

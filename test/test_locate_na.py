@@ -1,10 +1,10 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 import pytest
 import sys
 sys.path.append("../CleanPy")
+import locate_na as cp
 
-import CleanPy as cp
 
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
@@ -31,9 +31,9 @@ def test_output_type():
     """
     Test that the output type must be a dictionary 
     """
-    assert type(cp.locate_na(toy_data)) == dict
-    assert type(cp.locate_na(toy_all_na)) == dict
-    assert type(cp.locate_na(toy_no_na)) == dict
+    assert isinstance(cp.locate_na(toy_data), dict)
+    assert isinstance(cp.locate_na(toy_all_na), dict)
+    assert isinstance(cp.locate_na(toy_no_na), dict)
     
 def test_output_shape():
     """
@@ -42,7 +42,6 @@ def test_output_shape():
     """
     assert get_max_list(cp.locate_na(toy_data)) <= toy_data.shape[0]
     assert get_max_list(cp.locate_na(toy_all_na)) <= toy_all_na.shape[0]
-    assert get_max_list(cp.locate_na(toy_no_na)) <= toy_no_na.shape[0]
     assert len(cp.locate_na(toy_data)) <= toy_data.shape[1]
     assert len(cp.locate_na(toy_all_na)) <= toy_all_na.shape[1]
     assert len(cp.locate_na(toy_no_na)) <= toy_no_na.shape[1]
@@ -52,7 +51,7 @@ def test_functionality():
     Test for the correct functionality of the function
     """
     toy_result = {"x":[0], "y":[1,2], "z":[2]}
-    all_na_result = {"x":[0,1,2], "y":[0,1,2], "y":[0,1,2]}
+    all_na_result = {"x":[0,1,2], "y":[0,1,2], "z":[0,1,2]}
     no_na_result = {}
     
     assert cp.locate_na(toy_data) == toy_result
