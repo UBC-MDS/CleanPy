@@ -9,7 +9,7 @@ There is a dire need for a good data cleaning package, and we are trying to deve
 
 CleanPy is especially developed to create a streamlined process to give you an easy to read summary statistics table about your data. CleanPy is able to easily locate all the missing data for you and allow you to locate where exactly it occurs. Not only are you able to locate missing data, you can also define how you would like to deal with your missing data. 
 
-## Functions
+## Function
 *Test case information is in our milestone_1.md*
 **Function 1)** `summary`: Summary statistics generator for string and numeric data from dataframes.
 ```
