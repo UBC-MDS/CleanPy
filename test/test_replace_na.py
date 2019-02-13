@@ -4,7 +4,7 @@ import pytest
 import sys
 sys.path.append("../CleanPy")
 
-import CleanPy as cp
+import replace_na
 
 # Create test data frame
 input_df = pd.DataFrame({'x': [None, "b", "c"], 'y': [2 ,None,None], 'z': [3.6, 8.5,None]})
