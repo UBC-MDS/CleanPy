@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import pandas as pd
-import np as np
+import numpy as np
 
 def locate_na(data):
     """ 
