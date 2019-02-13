@@ -4,7 +4,8 @@ import pytest
 import sys
 sys.path.append("../CleanPy")
 
-import CleanPy as cp
+import summary
+
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})

@@ -3,8 +3,8 @@ import pandas as pd
 import pytest
 import sys
 sys.path.append("../CleanPy")
-import locate_na as cp
 
+import locate_na as cp
 
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
