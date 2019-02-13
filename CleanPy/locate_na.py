@@ -22,5 +22,5 @@ def locate_na(data):
     >>> locate_na(pd.DataFrame(np.array([[1, 2, None], [None, 2, 3]])))
     {"0": [2], "1": [0]}
     """
-    
+    #just testing this out
     return 
