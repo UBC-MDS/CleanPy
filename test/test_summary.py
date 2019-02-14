@@ -18,8 +18,9 @@ import CleanPy as cp
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})
 toy_no_na = pd.DataFrame({"x":[1, 2, 3, 4], "y": [1, 2, 3, 4], "z": [1, 2, 3, 4]})
+toy_mixed_strings= pd.DataFrame({"x":[1,3,4,5], "y": ["Female", "Female", "Male", "man"]})
+toy_mixed_data_type = pd.DataFrame({"x":[1,3,4,5], "y": ["Female", "Female", "Male", 22]}) #typo is 22
 
-The input data must be a dataframe. Otherwise, the function will return an error message “input_df must be a dataframe”
 def get_max_list(data):
     return max(len(v) for k, v in data.items())
 
@@ -41,9 +42,8 @@ def test_output_type():
     Test that the output type must be a nested dataframe 
     """
     assert type(cp.summary(toy_data)) == pd.DataFrame
-    assert type(cp.summary(toy_data2)) == pd.DataFrame
-    assert type(cp.summary(toy_all_na)) == df
-    assert type(cp.summary(toy_no_na)) == df
+    assert type(cp.summary(toy_all_na)) == pd.DataFrame
+    assert type(cp.summary(toy_no_na)) == pd.DataFrame
     
 def test_output_shape():
     """
@@ -52,12 +52,7 @@ def test_output_shape():
     assert get_max_list(cp.summary(toy_data)) <= toy_data.shape[0]
     assert get_max_list(cp.summary(toy_all_na)) <= toy_all_na.shape[0]
     assert get_max_list(cp.summary(toy_no_na)) <= toy_no_na.shape[0]
-    assert len(cp.locate_na(toy_data)) <= toy_data.shape[1]
-    assert len(cp.locate_na(toy_all_na)) <= toy_all_na.shape[1]
-    assert len(cp.locate_na(toy_no_na)) <= toy_no_na.shape[1]
-    
-def test_type_data():
-    """
-    Test for the correct functionality of the function
-    """
+    assert len(cp.summary(toy_data)) <= toy_data.shape[1]
+    assert len(cp.summary(toy_all_na)) <= toy_all_na.shape[1]
+    assert len(cp.summary(toy_no_na)) <= toy_no_na.shape[1]
     
