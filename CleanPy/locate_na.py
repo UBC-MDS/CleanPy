@@ -21,9 +21,9 @@ def locate_na(data):
         value = list of row indices that have missing values
         
     >>> locate_na(pd.DataFrame(np.array([[“Yes”, “No”], [None, “Yes”]])))
-    {"1": [0]}
+    {"0": [1]}
     >>> locate_na(pd.DataFrame(np.array([[1, 2, None], [None, 2, 3]])))
-    {"0": [2], "1": [0]}
+    {"0": [1], "2": [0]}
     """
     try:
         if not isinstance(data, pd.DataFrame):
@@ -38,8 +38,6 @@ def locate_na(data):
                 col_na[i] = row_na
         if (len(col_na) == 0):
             print("There are no missing values.")
-#             return None
-#         else:
         return col_na
     except TypeError:
         print("Input data type is not of type pd.DataFrame.")
