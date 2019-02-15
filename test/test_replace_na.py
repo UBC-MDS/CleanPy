@@ -2,16 +2,17 @@ import pandas as pd
 import numpy as np
 import pytest
 import sys
-sys.path.append("../CleanPy")
+sys.path.append("../")
 
 import replace_na as rp
 
 # Helper codes
-toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
+toy_data = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, None]})
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})
 toy_no_na = pd.DataFrame({"x":[1, 2, 3, 4], "y": [1, 2, 3, 4], "z": [1, 2, 3, 4]})
 
 # Test data type
+print (toy_data)
 
 def test_correct_input():
     """
@@ -35,7 +36,7 @@ def test_output_type():
     columns_2 = toy_all_na.columns.values
     columns_3 = toy_no_na.columns.values
     assert type(rp.replace_na(toy_data, columns_1)) == pd.DataFrame
-    assert type(rp.replace_na(toy_all_na, columns_2)) == pd.DataFrame
+  
     assert type(rp.replace_na(toy_no_na, columns_3)) == pd.DataFrame
     
 # Test for the functionality of the function
@@ -44,12 +45,20 @@ def test_functionality():
     """
     Test for the correct functionality of the function
     """
-    toy_result = {"x":[0], "y":[1,2], "z":[2]}
-    all_na_result = {"x":[0,1,2], "y":[0,1,2], "z":[0,1,2]}
-    no_na_result = {}
-    
-    assert rp.replace_na(toy_data) == toy_result
-    assert rp.replace_na(toy_all_na) == all_na_result
-    assert rp.replace_na(toy_no_na) == no_na_result
+    toy_result = pd.DataFrame({"x":[5,4,6], "y":[2,2,2], "z":[3.6,8.5,6.05]})
+    all_na_result = pd.DataFrame({"x":[0,0,0], "y":[0,0,0], "z":[0,0,0]})
+    no_na_result = pd.DataFrame({"x":[1, 2, 3, 4], "y": [1, 2, 3, 4], "z": [1, 2, 3, 4]})
+    columns_1 = toy_data.columns.values
+    columns_2 = toy_all_na.columns.values
+    columns_3 = toy_no_na.columns.values
+    a = rp.replace_na(toy_data, columns_1) == toy_result
+    c = rp.replace_na(toy_no_na, columns_3) == no_na_result
+    assert a.all(axis = None)
+    assert c.all(axis = None)
 
+# If the data frame contains all missing values(NAs)
+columns_2 = toy_all_na.columns.values
+def test_input_contains_all_missingvalues():
+    with pytest.raises(TypeError):
+          rp.replace_na(toy_all_na, columns_2)
     
