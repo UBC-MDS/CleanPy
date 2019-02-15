@@ -37,27 +37,30 @@ def replace_na(data, columns, replace="mean", remove=False):
     >>> replace_na(pd.DataFrame(np.array([[0, 1], [NA, 1]])), replace="min", columns=[0])
     pd.DataFrame(np.array([[0, 1], [0, 1]]))
     """
-
+    z = data.copy()
+    if data.isna().all(axis = None):
+        raise TypeError("Input must not be all missing values")
     if replace=="mean":
         for i in columns:
             mean = data[i].mean()
-            data.fillna({i: mean})
-            return data
+            z = z.fillna({i: mean})
+        return z
 
     if replace=="min":
         for i in columns:
             min_ = data[i].min()
-            data.fillna({i: min_})
-            return data
+            z= z.fillna({i: min_})
+        return z
 
     if replace=="median":
         for i in columns:
             median = data[i].median()
-            data.fillna({i: median})
-            return data
+            z = data.fillna({i: median})
+        return z
             
     if replace=="max":
         for i in columns:
             max_ = data[i].max()
-            data.fillna({i: max_})
-            return data
+            z = data.fillna({i: max_})
+        return z
+   
