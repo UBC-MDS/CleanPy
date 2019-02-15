@@ -4,20 +4,49 @@ import pytest
 import sys
 sys.path.append("../CleanPy")
 
-import replace_na
+import replace_na as rp
 
-# Create test data frame
-input_df = pd.DataFrame({'x': [None, "b", "c"], 'y': [2 ,None,None], 'z': [3.6, 8.5,None]})
+# Helper codes
+toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
+toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})
+toy_no_na = pd.DataFrame({"x":[1, 2, 3, 4], "y": [1, 2, 3, 4], "z": [1, 2, 3, 4]})
 
-# Return TypeError:"Input is not a dataframe" if the input is not a dataframe
+# Test data type
+
 def test_correct_input():
-    assert isinstance(input_df, pd.DataFrame)
-#Checks if the input has missing values, if it does not, then don't do anything
-def test_input_contains_missingvalues():
-  assert isinstance(input_df, pd.DataFrame)
-# Check if the whole input contains missing values, then it will 
-# throw an error saying, the input is not valid.
-def test_input_contains_all_missingvalues():
-  assert isinstance(input_df, pd.DataFrame)
-  
+    """
+    Test that the function returns an error if 
+    the input type is wrong
+    """
+    with pytest.raises(TypeError):
+        rp.replace_na("Input Data")
+        rp.replace_na([1, 2, 3, 4, 5])
+        rp.replace_na(True)
+        rp.replace_na((True, "False"))
+        rp.replace_na({"x":[1,2], "y":[3,4]})
+        
+# Test output type
+
+def test_output_type():
+    """
+    Test that the output type is also a  dataframe 
+    """
+    assert type(rp.summary(toy_data)) == pd.DataFrame
+    assert type(rp.summary(toy_all_na)) == pd.DataFrame
+    assert type(rp.summary(toy_no_na)) == pd.DataFrame
+    
+# Test for the functionality of the function
+
+def test_functionality():
+    """
+    Test for the correct functionality of the function
+    """
+    toy_result = {"x":[0], "y":[1,2], "z":[2]}
+    all_na_result = {"x":[0,1,2], "y":[0,1,2], "z":[0,1,2]}
+    no_na_result = {}
+    
+    assert rp.replace_na(toy_data) == toy_result
+    assert rp.replace_na(toy_all_na) == all_na_result
+    assert rp.replace_na(toy_no_na) == no_na_result
+
     
