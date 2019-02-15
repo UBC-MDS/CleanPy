@@ -31,9 +31,9 @@ def test_output_type():
     """
     Test that the output type is also a  dataframe 
     """
-    assert type(rp.summary(toy_data)) == pd.DataFrame
-    assert type(rp.summary(toy_all_na)) == pd.DataFrame
-    assert type(rp.summary(toy_no_na)) == pd.DataFrame
+    assert type(rp.replace_na(toy_data)) == pd.DataFrame
+    assert type(rp.replace_na(toy_all_na)) == pd.DataFrame
+    assert type(rp.replace_na(toy_no_na)) == pd.DataFrame
     
 # Test for the functionality of the function
 
