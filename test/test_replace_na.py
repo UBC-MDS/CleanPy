@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import pytest
 import sys
-sys.path.append("../")
+sys.path.append("../CleanPy")
 
 import replace_na as rp
 
