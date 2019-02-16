@@ -3,14 +3,9 @@ import numpy as np
 import pytest
 import sys
 sys.path.append("../CleanPy")
+
 import summary as sm
-#import CleanPy.summary import summary 
 
-<<<<<<< HEAD
-=======
-import summary
-
->>>>>>> upstream/master
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})

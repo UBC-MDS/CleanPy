@@ -12,26 +12,35 @@ CleanPy is especially developed to create a streamlined process to give you an e
 ## Function
 **Function 1)** `summary`: Summary statistics generator for string and numeric data from dataframes.
 ```
-def summary(data, zero_include=TRUE):
-"""
+def summary(data):
+    """
+    This function computes summary statistics for text and numerical column_data from a given column_dataframe.
+    Input: dictionary or column_dataframe
+    Returns summary statistics for each column in a nested pandas column_dataframe. Since pandas only accepts one data type per column, 
+    we only need to test the type of each column once.
+    It will perform two different summary statistics based on 2 column_datatypes of either
+    1) string/bool or 2) int/float/datetime object. For numeric data columns it returns a dictionary of summary statistics including
+    mean value for each column, min, max, mean, median and count (number of non NA values per column) and count_NA
+    (number of NA values per column). Similarly, for string columns it returns the unique string values and
+    their counts in a dictionary. The column summary statistics are then nested into a pandas dataframe and returned.
+    
     Parameters
     ----------
-    data : dataframe
-        This is the dataframe that the function will use to provide summary statistics of each column in the data frame. It will determine the main data type of the column by calculated the type of each row entry in the column, and using the most frequent data type as the expected input for that column. It will perform two different summary statistics based on 2 different groups of datatypes of either 1) string or 2) int/float. For number columns it returns a dictionary of summary statistics including mean value for each column, min, max, count (number of non NA values per column) and count_NA (number of NA values per column). Similarly, for string columns it returns the unique string values and their counts in a dictionary. It will also provide a count of NA values which will include empty strings, and anything other than the correct data type for each column. The column names are the keys.
+    data : pd.DataFrame
+        used to provide summary statistics of each column.
     
     Returns
     -------
-    Summary table of each columns summary statistics
-    
-    >>> summary(pd.DataFrame(colnames=”Likes coding”, rows= np.array([[4,3,2, 2])))
-    pd.DataFrame(col1, values=
+    Summary pandas dataframe of each column's summary statistics
+    >>> summary(pd.column_dataFrame(colnames="Likes coding", rows= np.array([[4,3,2, 2])))
+    pd.DataFrame(
         min= 2
         max= 4
         mean= 11/4
         median= 2
-        count=4
-        count_NA=0
-"""
+        count= 4
+        count_NA= 0)
+    """
 ```
 
 **Function 2)** `locate_na`: Returns a dataframe of the count and indices of NA values. This function takes in a dataframe and finds NA values and returns the location of these values along the count of total NAs.
@@ -107,7 +116,7 @@ pip install git+https://github.com/UBC-MDS/CleanPy.git
 
 Then you can import our packages using:
 ```
-from CleanPy import summary, locate_na, replace_na
+from cleanpy import summary, locate_na, replace_na
 ```
 
 ## Python Dependencies
