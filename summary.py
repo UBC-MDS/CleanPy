@@ -1,603 +1,95 @@
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "\\begin{align*}\n",
-    "X_i|p & \\sim \\text{Binomial}(n,p)\\\\\n",
-    "p & \\sim \\text{Beta}(a, b)\n",
-    "\\end{align*}\n",
-    "\n",
-    "$$Q(\\tau)=\\beta_0(\\tau) + \\beta_1(\\tau) X_1 + \\cdots + \\beta_p(\\tau) X_p,$$\n",
-    "\n",
-    "$$ S = \\sum_{i=1}^{n} \\rho_{\\tau}(Y_i - \\hat{Q}_i(\\tau)), $$\n",
-    "where $Y_i$ for $i=1,\\ldots,n$ is the response data, $\\hat{Q}_i(\\tau)$ are the $\\tau$-quantile estimates, and $\\rho_{\\tau}$ is the __check function__ (also known as the _absolute asymmetric deviation function_ or _tick function_), given by\n",
-    "$$ \\rho_{\\tau}(s) = (\\tau - I(s<0))s $$"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 34,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "                                                x  \\\n",
-      "col_df                                        NaN   \n",
-      "col_vals                                      NaN   \n",
-      "count                                         NaN   \n",
-      "count_NAs                                       0   \n",
-      "count_unique                                    2   \n",
-      "counts        c    1\n",
-      "b    1\n",
-      "Name: x, dtype: int64   \n",
-      "max_                                          NaN   \n",
-      "mean                                          NaN   \n",
-      "median                                        NaN   \n",
-      "min_                                          NaN   \n",
-      "\n",
-      "                                        y                                z  \n",
-      "col_df             y\n",
-      "0  2.0\n",
-      "1  NaN\n",
-      "2  NaN        z\n",
-      "0   3.6\n",
-      "1   8.5\n",
-      "2  10.0  \n",
-      "col_vals                  [2.0, nan, nan]                 [3.6, 8.5, 10.0]  \n",
-      "count                                   3                                3  \n",
-      "count_NAs                               2                                0  \n",
-      "count_unique                          NaN                              NaN  \n",
-      "counts                                NaN                              NaN  \n",
-      "max_                                    2                               10  \n",
-      "mean                                    2                          7.36667  \n",
-      "median                                NaN                              8.5  \n",
-      "min_                                    2                              3.6  \n"
-     ]
-    }
-   ],
-   "source": [
-    "# reference https://github.com/pandas-dev/pandas/blob/v0.24.1/pandas/core/generic.py#L9484-L9815\n",
-    "\n",
-    "def summary(data):\n",
-    "    '''\n",
-    "    This function computes summary statistics for text and numerical column_data from a given column_dataframe.\n",
-    "    Input: dictionary or column_dataframe\n",
-    "    Returns summary statistics for each column in a nested pandas column_dataframe. It will determine the main column_data type of the column\n",
-    "    by calculated the type of each row entry in the column, and using the most frequent column_data type as the expected input for\n",
-    "    that column.\n",
-    "    It will perform two different summary statistics based on 2 different groups of column_datatypes of either\n",
-    "    1) string/bool or 2) int/float. For number columns it returns a dictionary of summary statistics including\n",
-    "    mean value for each column, min, max, mean, median and count (number of non NA values per column) and count_NA\n",
-    "    (number of NA values per column). Similarly, for string columns it returns the unique string values and\n",
-    "    their counts in a dictionary. The column summary statistics are then nested into a pandas dataframe and returned.\n",
-    "    \n",
-    "    Parameters\n",
-    "    ----------\n",
-    "    data : pd.DataFrame\n",
-    "        used to provide summary statistics of each column.\n",
-    "    \n",
-    "    Returns\n",
-    "    -------\n",
-    "    Summary table of each columns summary statistics\n",
-    "    >>> summary(pd.column_dataFrame(colnames=\"Likes coding\", rows= np.array([[4,3,2, 2])))\n",
-    "    pd.DataFrame(\n",
-    "        min= 2\n",
-    "        max= 4\n",
-    "        mean= 11/4\n",
-    "        median= 2\n",
-    "        count= 4\n",
-    "        count_NA= 0\n",
-    "        unique= [4,3,2])\n",
-    "    '''\n",
-    "    def get_numeric_stats(column_data):\n",
-    "        stats_dict = {\n",
-    "            \"col_vals\"  :   column_data.values,\n",
-    "            \"col_df\"    :   pd.DataFrame(column_data),\n",
-    "            \"count_NAs\" :   column_data.isna().sum(),\n",
-    "            \"min_\"      :   np.min(column_data),\n",
-    "            \"max_\"      :   np.max(column_data),\n",
-    "            \"mean\"      :   np.mean(column_data),\n",
-    "            \"median\"    :   np.median(column_data),\n",
-    "            \"count\"     :   len(column_data)\n",
-    "        }\n",
-    "        return(stats_dict)\n",
-    "    def get_categorical_stats(column_data):\n",
-    "        #find unique strings and assign them as keys in a dictionary with their counts as values \n",
-    "        \n",
-    "        objcounts = column_data.value_counts()\n",
-    "        count_unique = len(objcounts[objcounts != 0]) \n",
-    "        stats_dict = {\n",
-    "            #\"Unique\" : count_Vectorizer(column_data), #could add counts of each word\n",
-    "            \"counts\"  : column_data.value_counts(),\n",
-    "            \"count_unique\" : len(objcounts[objcounts != 0]),\n",
-    "            \"count_NAs\" : len(objcounts[objcounts == 0])\n",
-    "        }             \n",
-    "        return stats_dict\n",
-    "    \n",
-    "    #check that input is a pandas df NOT WORKING\n",
-    "    #if data.dtype != pd.DataFrame({'Val': 1})):\n",
-    "    #    return print(\"Input should be a pandas dataframe. Use pd.DataFrame(data)\")\n",
-    "    # check dimensions\n",
-    "    if data.ndim >= 3:\n",
-    "        msg = \"Summary is not implemented on Panel objects.\"\n",
-    "        raise NotImplementedError(msg)\n",
-    "    elif data.ndim == 2 and data.columns.size == 0:\n",
-    "        raise ValueError(\"Cannot describe a column_dataFrame without columns\")\n",
-    "    column_names = list(data.columns.values)\n",
-    "    summary_dict = {}\n",
-    "    for column in column_names:\n",
-    "        #print(data[column])\n",
-    "        if (data[column].dtype == \"float64\" or data[column].dtype == \"int64\" or data[column].dtype == \"timedelta64\"): # Numeric Data Column\n",
-    "            summary_stats = get_numeric_stats(data[column])\n",
-    "        else: # Categorical Data Column\n",
-    "            summary_stats = get_categorical_stats(data[column])\n",
-    "        summary_dict[column] = summary_stats\n",
-    "    return(pd.DataFrame(summary_dict))\n",
-    "\n",
-    "\n",
-    "import pandas as pd\n",
-    "import numpy as np\n",
-    "from sklearn.feature_extraction.text import CountVectorizer\n",
-    "\n",
-    "toy_data = pd.DataFrame({\"x\":[None, \"b\", \"c\"], \"y\": [2, None, None], \"z\": [3.6, 8.5, 10]})\n",
-    "#numeric_data = pd.DataFrame({\"y\": [2, None, None], \"z\": [3.6, 8.5, 10]})\n",
-    "#print(summary(toy_data))\n"
-   ]
-  },
-  {
-   "cell_type": "raw",
-   "metadata": {},
-   "source": [
-    "cat_data = pd.DataFrame({\"x\":[None, \"b\", \"c\"]})\n",
-    "cat_data[\"x\"].values.T.tolist()\n",
-    "\n",
-    "#.values.T.tolist()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "def get_categorical_stats(column_data):\n",
-    "    \n",
-    "        #find unique strings and assign them as keys in a dictionary with their counts as values \n",
-    "        vectorizer = CountVectorizer()\n",
-    "        X = vectorizer.fit_transform(column_data)\n",
-    "        print(vectorizer.get_feature_names())\n",
-    " \n",
-    "        output = []\n",
-    "            for x in column_data:\n",
-    "                if x not in output:\n",
-    "                    output.append(x)\n",
-    "\n",
-    "        stats_dict = {\n",
-    "            \"Unique\" : np.unique(column_data),\n",
-    "            \"counts\"  : column_data.value_counts(),\n",
-    "            \"count_unique\" : len(objcounts[objcounts != 0]),\n",
-    "            \"count_NAs\" : len(objcounts[objcounts == 0])\n",
-    "        }             \n",
-    "        return stats_dict\n",
-    "    \n",
-    "get_categorical_stats(cat_data)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 16,
-   "metadata": {},
-   "outputs": [
-    {
-     "ename": "AttributeError",
-     "evalue": "'DataFrame' object has no attribute 'dtype'",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[1;31mAttributeError\u001b[0m                            Traceback (most recent call last)",
-      "\u001b[1;32m<ipython-input-16-a63b98c25c09>\u001b[0m in \u001b[0;36m<module>\u001b[1;34m\u001b[0m\n\u001b[0;32m      2\u001b[0m                    \u001b[1;34m'year'\u001b[0m\u001b[1;33m:\u001b[0m \u001b[1;33m[\u001b[0m\u001b[1;36m2012\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;36m2014\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;36m2013\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;36m2014\u001b[0m\u001b[1;33m,\u001b[0m \u001b[1;36m2015\u001b[0m\u001b[1;33m]\u001b[0m\u001b[1;33m,\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m      3\u001b[0m                    'sale': [55, 40, 84, 31, 11]})\n\u001b[1;32m----> 4\u001b[1;33m \u001b[0mdata\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mdtype\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[1;32m~\\Anaconda3\\lib\\site-packages\\pandas\\core\\generic.py\u001b[0m in \u001b[0;36m__getattr__\u001b[1;34m(self, name)\u001b[0m\n\u001b[0;32m   4374\u001b[0m             \u001b[1;32mif\u001b[0m \u001b[0mself\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0m_info_axis\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0m_can_hold_identifiers_and_holds_name\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mname\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m   4375\u001b[0m                 \u001b[1;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[1;33m[\u001b[0m\u001b[0mname\u001b[0m\u001b[1;33m]\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m-> 4376\u001b[1;33m             \u001b[1;32mreturn\u001b[0m \u001b[0mobject\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0m__getattribute__\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mself\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mname\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m   4377\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m   4378\u001b[0m     \u001b[1;32mdef\u001b[0m \u001b[0m__setattr__\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mself\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mname\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mvalue\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n",
-      "\u001b[1;31mAttributeError\u001b[0m: 'DataFrame' object has no attribute 'dtype'"
-     ]
-    }
-   ],
-   "source": [
-    "data=pd.DataFrame({'month': [1, 4, 7, 'Nan', 11],\n",
-    "                   'year': [2012, 2014, 2013, 2014, 2015],\n",
-    "                   'sale': [55, 40, 84, 31, 11]})\n",
-    "data.dtype()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 86,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "[1 2012 55]\n",
-      "0\n",
-      "[4 2014 40]\n",
-      "0\n",
-      "[7 2013 84]\n",
-      "0\n",
-      "[dtype('O'), dtype('O'), dtype('O')]\n",
-      "yes\n"
-     ]
-    }
-   ],
-   "source": [
-    "column_range= np.arange(0, data.shape[1])\n",
-    "list_of_types=[]\n",
-    "for column_index in column_range:\n",
-    "    #access column values\n",
-    "    col_vals= data.values[column_index]\n",
-    "    print(col_vals)\n",
-    "    list_of_types.append(col_vals.dtype)\n",
-    "    #col_vals.value_counts(dropna = False)[np.nan]\n",
-    "    #find nas\n",
-    "    col_df= data.iloc[:, column_index]\n",
-    "    count_NAs = col_df.isna().sum()\n",
-    "    print(count_NAs)\n",
-    "print(list_of_types)\n",
-    "if Most_Common(list_of_types) == 'float64' or 'int64':\n",
-    "    print(\"yes\")\n",
-    "    \n",
-    "    "
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {},
-   "outputs": [
-    {
-     "ename": "SyntaxError",
-     "evalue": "invalid syntax (<ipython-input-3-86bb8ebfe154>, line 83)",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[1;36m  File \u001b[1;32m\"<ipython-input-3-86bb8ebfe154>\"\u001b[1;36m, line \u001b[1;32m83\u001b[0m\n\u001b[1;33m    return pd.DataFrame({}: )\u001b[0m\n\u001b[1;37m                          ^\u001b[0m\n\u001b[1;31mSyntaxError\u001b[0m\u001b[1;31m:\u001b[0m invalid syntax\n"
-     ]
-    }
-   ],
-   "source": [
-    "#write summary function\n",
-    "def summary(data):\n",
-    "    '''\n",
-    "    This function computes summary statistics for text and numerical data from a given dataframe.\n",
-    "    \n",
-    "    Input: dictionary or dataframe\n",
-    "    \n",
-    "    Returns summary statistics for each column in a nested pandas dataframe. It will determine the main data type of the column\n",
-    "    by calculated the type of each row entry in the column, and using the most frequent data type as the expected input for \n",
-    "    that column. \n",
-    "    It will perform two different summary statistics based on 2 different groups of datatypes of either\n",
-    "    1) string or 2) int/float. For number columns it returns a dictionary of summary statistics including\n",
-    "    mean value for each column, min, max, count (number of non NA values per column) and count_NA \n",
-    "    (number of NA values per column). Similarly, for string columns it returns the unique string values and \n",
-    "    their counts in a dictionary. It will also provide a count of NA values which will include empty strings,\n",
-    "    and anything other than the correct data type for each column. The column summary statistics are then nested\n",
-    "    into a larger dataframe.\n",
-    "    \n",
-    "    Parameters\n",
-    "    ----------\n",
-    "    data : dataframe\n",
-    "        This is the dataframe that the function will use to provide summary statistics of each column in the data frame. \n",
-    "    \n",
-    "    Returns\n",
-    "    -------\n",
-    "    Summary table of each columns summary statistics\n",
-    "    \n",
-    "    >>> summary(pd.DataFrame(colnames=”Likes coding”, rows= np.array([[4,3,2, 2])))\n",
-    "    pd.DataFrame{('col1', values=\n",
-    "        min= 2\n",
-    "        max= 4\n",
-    "        mean= 11/4\n",
-    "        median= 2\n",
-    "        count= 4\n",
-    "        count_NA= 0\n",
-    "        unique= [4,3,2])}\n",
-    "\n",
-    "    '''\n",
-    "    #check that input is a pandas df\n",
-    "    if type(data) != type(pd.DataFrame({'Val': 1})):\n",
-    "        return print(\"Please input data as a pandas dataframe using pd.DataFrame(data)\")\n",
-    "    \n",
-    "    # check dimensions\n",
-    "    if data.ndim >= 3:\n",
-    "        msg = \"summary is not implemented on Panel objects.\"\n",
-    "        raise NotImplementedError(msg)\n",
-    "\n",
-    "    elif data.ndim == 2 and data.columns.size == 0:\n",
-    "        raise ValueError(\"Cannot describe a DataFrame without columns\")\n",
-    "    \n",
-    "    #check type of each data column to determine which analysis to do\n",
-    "    def describe_1d(data):\n",
-    "\n",
-    "            if is_bool_dtype(data):\n",
-    "\n",
-    "                return summary_categorical_1d(data)\n",
-    "\n",
-    "            elif is_numeric_dtype(data):\n",
-    "\n",
-    "                return summary_numeric_1d(data)\n",
-    "\n",
-    "            elif is_timedelta64_dtype(data):\n",
-    "\n",
-    "                return summary_numeric_1d(data)\n",
-    "\n",
-    "            else:\n",
-    "\n",
-    "                return summary_categorical_1d(data)\n",
-    "    \n",
-    "    def summary_numeric_1d(data):\n",
-    "        stat_index = (['count', 'count_NAs' 'mean', 'std', 'min', 'max'])\n",
-    "\n",
-    "        d = ([series.count(), col_df.isna().sum(), series.mean(), series.std(), series.min()] + [series.max()])\n",
-    "\n",
-    "        column_range= np.arange(0, data.shape[1])\n",
-    "    \n",
-    "        for column_index in column_range:\n",
-    "        #access column\n",
-    "            col_vals= data.values[:,column_index]\n",
-    "            col_df= data.iloc[:, column_index]\n",
-    "            count_NAs = col_df.isna().sum()\n",
-    "            min_ = np.min(col_vals)\n",
-    "            max_ = np.max(col_vals)\n",
-    "            mean = np.mean(col_vals)\n",
-    "            median = np.median(col_vals)\n",
-    "            count= len(col_vals)\n",
-    "    return pd.DataFrame({stat_index}: d )\n",
-    "    #return pd.Series(d, index=stat_index, name=series.name)\n",
-    "    #df.groupby('ID')['Variable_1'].agg({'Mean':np.mean, 'SD':np.std})\n",
-    "\n",
-    "\n",
-    "    \n",
-    "    def summary_categorical_1d(data):\n",
-    "        column_range= np.arange(0, data.shape[1])\n",
-    "    \n",
-    "        for column_index in column_range:\n",
-    "        #access column\n",
-    "        count=      \n",
-    "\n",
-    "        unique =    \n",
-    "\n",
-    "        top         \n",
-    "\n",
-    "        freq "
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "\n",
-    "    def summary_numeric_1d(col_vals):\n",
-    "\n",
-    "        stat_index = (['count', 'mean', 'std', 'min', 'count_NAs', 'unique'] \n",
-    "\n",
-    "        d = ([col_vals.count(), col_vals.mean(), col_vals.std(), col_vals.min(), col_df.is_na.sum()])\n",
-    "\n",
-    "        return pd.DataFrame(d, index=stat_index)\n",
-    "                    \n",
-    "\n",
-    "    def summary_categorical_1d(col_vals):\n",
-    "        names = ['count', 'unique', 'count_NAs']\n",
-    "\n",
-    "        objcounts = col.value_counts()\n",
-    "\n",
-    "        count_unique = len(objcounts[objcounts != 0])\n",
-    "            \n",
-    "        count_NAs = count\n",
-    "\n",
-    "        result = [data.count(), count_unique, count_NAs]\n",
-    "\n",
-    "        if result[1] > 0:\n",
-    "\n",
-    "        top, freq = objcounts.index[0], objcounts.iloc[0]\n",
-    "\n",
-    "\n",
-    "   \n",
-    "\n",
-    "\n",
-    "  "
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 13,
-   "metadata": {},
-   "outputs": [
-    {
-     "ename": "IndentationError",
-     "evalue": "unindent does not match any outer indentation level (<tokenize>, line 15)",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[1;36m  File \u001b[1;32m\"<tokenize>\"\u001b[1;36m, line \u001b[1;32m15\u001b[0m\n\u001b[1;33m    def describe_categorical_1d(data):\u001b[0m\n\u001b[1;37m    ^\u001b[0m\n\u001b[1;31mIndentationError\u001b[0m\u001b[1;31m:\u001b[0m unindent does not match any outer indentation level\n"
-     ]
-    }
-   ],
-   "source": [
-    "\n",
-    "\n",
-    "        if self.ndim == 1:\n",
-    "\n",
-    "            return describe_1d(self)\n",
-    "\n",
-    "        elif (include is None) and (exclude is None):\n",
-    "\n",
-    "            # when some numerics are found, keep only numerics\n",
-    "\n",
-    "            data = self.select_dtypes(include=[np.number])\n",
-    "\n",
-    "            if len(data.columns) == 0:\n",
-    "\n",
-    "                data = self\n",
-    "\n",
-    "        elif include == 'all':\n",
-    "\n",
-    "            if exclude is not None:\n",
-    "\n",
-    "                msg = \"exclude must be None when include is 'all'\"\n",
-    "\n",
-    "                raise ValueError(msg)\n",
-    "\n",
-    "            data = self\n",
-    "\n",
-    "        else:\n",
-    "\n",
-    "            data = self.select_dtypes(include=include, exclude=exclude)\n",
-    "\n",
-    "\n",
-    "\n",
-    "        ldesc = [describe_1d(s) for _, s in data.iteritems()]\n",
-    "\n",
-    "        # set a convenient order for rows\n",
-    "\n",
-    "        names = []\n",
-    "\n",
-    "        ldesc_indexes = sorted((x.index for x in ldesc), key=len)\n",
-    "\n",
-    "        for idxnames in ldesc_indexes:\n",
-    "\n",
-    "            for name in idxnames:\n",
-    "\n",
-    "                if name not in names:\n",
-    "\n",
-    "                    names.append(name)\n",
-    "\n",
-    "\n",
-    "\n",
-    "        d = pd.concat(ldesc, join_axes=pd.Index([names]), axis=1)\n",
-    "\n",
-    "        d.columns = data.columns.copy()\n",
-    "\n",
-    "        return d"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 5,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "<div>\n",
-       "<style scoped>\n",
-       "    .dataframe tbody tr th:only-of-type {\n",
-       "        vertical-align: middle;\n",
-       "    }\n",
-       "\n",
-       "    .dataframe tbody tr th {\n",
-       "        vertical-align: top;\n",
-       "    }\n",
-       "\n",
-       "    .dataframe thead th {\n",
-       "        text-align: right;\n",
-       "    }\n",
-       "</style>\n",
-       "<table border=\"1\" class=\"dataframe\">\n",
-       "  <thead>\n",
-       "    <tr style=\"text-align: right;\">\n",
-       "      <th></th>\n",
-       "      <th>Val</th>\n",
-       "      <th>Min</th>\n",
-       "      <th>Max</th>\n",
-       "    </tr>\n",
-       "  </thead>\n",
-       "  <tbody>\n",
-       "    <tr>\n",
-       "      <th>0</th>\n",
-       "      <td>1</td>\n",
-       "      <td>1</td>\n",
-       "      <td>3</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>1</th>\n",
-       "      <td>3</td>\n",
-       "      <td>1</td>\n",
-       "      <td>3</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>2</th>\n",
-       "      <td>1</td>\n",
-       "      <td>1</td>\n",
-       "      <td>3</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>3</th>\n",
-       "      <td>2</td>\n",
-       "      <td>1</td>\n",
-       "      <td>3</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>4</th>\n",
-       "      <td>2</td>\n",
-       "      <td>1</td>\n",
-       "      <td>3</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>5</th>\n",
-       "      <td>3</td>\n",
-       "      <td>1</td>\n",
-       "      <td>3</td>\n",
-       "    </tr>\n",
-       "  </tbody>\n",
-       "</table>\n",
-       "</div>"
-      ],
-      "text/plain": [
-       "   Val  Min  Max\n",
-       "0    1    1    3\n",
-       "1    3    1    3\n",
-       "2    1    1    3\n",
-       "3    2    1    3\n",
-       "4    2    1    3\n",
-       "5    3    1    3"
-      ]
-     },
-     "execution_count": 5,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "import pandas as pd\n",
-    "import numpy as np\n",
-    "df = pd.DataFrame({'Val':np.random.randint(1,6,6)})\n",
-    "df['Min'], df['Max'] = df['Val'].min(), df['Val'].max()\n",
-    "df"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.6.8"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2
-}
+# [reference](https://github.com/pandas-dev/pandas/blob/v0.24.1/pandas/core/generic.py#L9484-L9815)
+import pandas as pd
+import numpy as np
+
+def summary(data):
+    '''
+    This function computes summary statistics for text and numerical column_data from a given column_dataframe.
+    Input: dictionary or column_dataframe
+    Returns summary statistics for each column in a nested pandas column_dataframe. Since pandas only accepts one data type per column, 
+    we only need to test the type of each column once.
+    It will perform two different summary statistics based on 2 column_datatypes of either
+    1) string/bool or 2) int/float/datetime object. For numeric data columns it returns a dictionary of summary statistics including
+    mean value for each column, min, max, mean, median and count (number of non NA values per column) and count_NA
+    (number of NA values per column). Similarly, for string columns it returns the unique string values and
+    their counts in a dictionary. The column summary statistics are then nested into a pandas dataframe and returned.
+    
+    Parameters
+    ----------
+    data : pd.DataFrame
+        used to provide summary statistics of each column.
+    
+    Returns
+    -------
+    Summary pandas dataframe of each column's summary statistics
+    >>> summary(pd.column_dataFrame(colnames="Likes coding", rows= np.array([[4,3,2, 2])))
+    pd.DataFrame(
+        min= 2
+        max= 4
+        mean= 11/4
+        median= 2
+        count= 4
+        count_NA= 0)
+    '''
+    #find unique values in a list
+    def unique(seq): 
+        noDupes = []
+        [noDupes.append(i) for i in seq if not noDupes.count(i)]
+        return noDupes
+    #find count of numbers that are not null or none
+    def count_num(vals):
+        length= 0
+        for item in vals:
+            if item is not None:
+                length += 1
+            else:
+                length += 0
+        return length
+    
+    def get_numeric_stats(column_data):
+        col_df= pd.DataFrame(column_data)
+        col_vals= column_data.values
+        stats_dict = {
+            "Unique"      :   column_data.unique(),
+            "count"       :   column_data.count(),
+            "count_NAs"   :   column_data.isna().sum(),
+            "count_unique":   len(column_data.unique()),
+            "min_"        :   np.min(column_data),
+            "max_"        :   np.max(column_data),
+            "mean"        :   np.mean(column_data),
+            "median"      :   np.median(column_data),
+        }
+        return(stats_dict)
+                
+    def get_categorical_stats(column_data):
+        #find unique strings and assign them as keys in a dictionary with their counts as values 
+        
+        objcounts = column_data.value_counts()
+        count_unique = len(objcounts[objcounts != 0]) 
+        stats_dict = {
+            "Unique"       : column_data.unique(), #could add counts of each word with countvectorizer
+            "count"        : len(objcounts),
+            "count_unique" : len(objcounts[objcounts != 0]),
+            "count_NAs"    : len(objcounts[objcounts == 0])
+        }             
+        return stats_dict
+    
+    #check that input is a pandas df 
+    if isinstance(data, pd.DataFrame) == False:
+        raise NotImplementedError("Input should be a pandas dataframe. Use pd.DataFrame(data)")
+    # check dimensions
+    if data.ndim >= 3:
+        msg = "Summary is not implemented on Panel objects."
+        raise NotImplementedError(msg)
+    elif data.ndim == 2 and data.columns.size == 0:
+        raise ValueError("Cannot describe a column_dataFrame without columns")
+    column_names = list(data.columns.values)
+    summary_dict = {}
+    for column in column_names:
+        #print(data[column])
+        if (data[column].dtype == "float64" or data[column].dtype == "int64" or data[column].dtype == "timedelta64"): # Numeric Data Column
+            summary_stats = get_numeric_stats(data[column])
+        else: # Categorical Data Column
+            summary_stats = get_categorical_stats(data[column])
+        summary_dict[column] = summary_stats
+    return(pd.DataFrame(summary_dict))
