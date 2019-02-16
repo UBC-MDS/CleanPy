@@ -1,19 +1,11 @@
-#Test cases: 
-#The input data must be a dataframe. Otherwise, the function will return an error message “input_df must be a dataframe”
-#Data columns should have one datatype. If datatype is mostly strings, return summary statistics for strings. 
-#If datatype is mostly numbers, return summary statistics for numbers 
-#If all columns are numbers, return summary statistics with numbers
-#If some columns are integers, and some are floats, return summary statistics using each columns data type
-#If one column has a mixture of data types (strings, floats or ints) return summary statistics by converting all entries into the predominant datatype
-#If a column contains any entries that are not of the type string float or int, return error message “This function only handles strings, floats and integer data types”
-
 import pandas as pd
 import numpy as np
 import pytest
 import sys
 sys.path.append("../CleanPy")
-
 import summary as sm
+#import CleanPy.summary import summary 
+
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})
@@ -36,7 +28,7 @@ def get_max_list(data):
 # Test functions
 def test_data_type():
     """
-    Test that the function returns an error if 
+    Test input data type, and that the function returns an error if 
     the input type is incorrect
     """
     with pytest.raises(NotImplementedError):
@@ -44,27 +36,23 @@ def test_data_type():
         sm.summary([1, 2, 3, 4, 5])
         sm.summary(True)
         sm.summary((True, "False"))
-        sm.summary({"x":[1,2], "y":[3,4]})
+        #sm.summary({"x":[1,2], "y":[3,4]})
         
 def test_output_type():
     """
-    Test that the output type must be a nested dataframe 
+    Test that the output type must be a dataframe 
     """
-    assert type(sm.summary(toy_data)) == pd.DataFrame
-    assert type(sm.summary(toy_all_na)) == pd.DataFrame
-    assert type(sm.summary(toy_no_na)) == pd.DataFrame
-    assert type(sm.summary(toy_mixed_strings)) == pd.DataFrame 
+    assert type(sm.summary(toy_data)) == pd.core.frame.DataFrame
+    assert type(sm.summary(toy_all_na)) == pd.core.frame.DataFrame
+    assert type(sm.summary(toy_no_na)) == pd.core.frame.DataFrame
+    assert type(sm.summary(toy_mixed_strings)) == pd.core.frame.DataFrame 
     
 def test_output_shape():
     """
-    Test that output has the correct shape
+    Test that output has the correct shape. Can't have more output columns than data input columns
     """
-    assert get_max_list(sm.summary(toy_data)) <= toy_data.shape[0]
-    assert get_max_list(sm.summary(toy_all_na)) <= toy_all_na.shape[0]
-    assert get_max_list(sm.summary(toy_no_na)) <= toy_no_na.shape[0]
-    assert len(sm.summary(toy_data)) <= toy_data.shape[1]
-    assert len(sm.summary(toy_all_na)) <= toy_all_na.shape[1]
-    assert len(sm.summary(toy_no_na)) <= toy_no_na.shape[1]
+    assert (sm.summary(toy_data))[1] <= toy_data.shape[1]
+   
     
 def test_summary_stats():
     '''

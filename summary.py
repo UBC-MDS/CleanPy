@@ -43,7 +43,7 @@ def summary(data):
         stats_dict = {
             "Unique"      :   column_data.unique(),
             "count"       :   column_data.count(),
-            "count_NAs"   :   column_data.isna().sum(),
+            "count_NAs"   :   column_data.isna().sum(), #count_na(column_data), 
             "count_unique":   len(column_data.unique()),
             "min_"        :   np.min(column_data),
             "max_"        :   np.max(column_data),
@@ -53,8 +53,7 @@ def summary(data):
         return(stats_dict)
                 
     def get_categorical_stats(column_data):
-        #find unique strings and assign them as keys in a dictionary with their counts as values 
-        
+        #find unique strings and count missing strings 
         objcounts = column_data.value_counts()
         count_unique = len(objcounts[objcounts != 0]) 
         stats_dict = {
@@ -74,13 +73,15 @@ def summary(data):
         raise NotImplementedError(msg)
     elif data.ndim == 2 and data.columns.size == 0:
         raise ValueError("Cannot describe a column_dataFrame without columns")
+    
+    #find data type in each column of input data
     column_names = list(data.columns.values)
     summary_dict = {}
     for column in column_names:
-        #print(data[column])
+        #checj if data type is float or int or time obj
         if (data[column].dtype == "float64" or data[column].dtype == "int64" or data[column].dtype == "timedelta64"): # Numeric Data Column
             summary_stats = get_numeric_stats(data[column])
-        else: # Categorical Data Column
+        else: # assume everything else is Categorical Data Column
             summary_stats = get_categorical_stats(data[column])
         summary_dict[column] = summary_stats
     return(pd.DataFrame(summary_dict))
