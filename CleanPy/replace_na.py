@@ -33,29 +33,39 @@ def replace_na(data, columns, replace="mean", remove=False):
     pd.DataFrame(np.array([[0, 1], [0, 1]]))
     """
     z = data.copy()
+    
+    # Return error if data has only missing values
     if data.isna().all(axis = None):
-        raise TypeError("Input must not be all missing values")
+        raise TypeError("Input must not be all missing values.")
+    
+    # Return error if the data argument is a dataframe
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("Input date must be a pandas dataframe.")
+        
+    # Return error if the columns argument is a list
+    if not (isinstance(columns, list) or isinstance(columns, np.ndarray)) :
+        raise TypeError("Please make sure the column(s) you would like to replace is a list or numpy array type.")
+    
+    # Return error if columns have numeric types
+    for i in columns:
+        if not (data[i].dtypes == 'float64' or data[i].dtypes == 'int64'):
+            raise KeyError("Please make sure the column you are replacing is numeric.")
+
     if replace=="mean":
         for i in columns:
             mean = data[i].mean()
             z = z.fillna({i: mean})
-        return z
-
-    if replace=="min":
+    elif replace=="min":
         for i in columns:
             min_ = data[i].min()
             z= z.fillna({i: min_})
-        return z
-
-    if replace=="median":
+    elif replace=="median":
         for i in columns:
             median = data[i].median()
             z = data.fillna({i: median})
-        return z
-            
-    if replace=="max":
+    elif replace=="max":
         for i in columns:
             max_ = data[i].max()
             z = data.fillna({i: max_})
-        return z
+    return z
    

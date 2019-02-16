@@ -10,6 +10,7 @@ import replace_na as rp
 toy_data = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, None]})
 toy_all_na = pd.DataFrame({"x":[None, None, None], "y": [None, None, None], "z": [None, None, None]})
 toy_no_na = pd.DataFrame({"x":[1, 2, 3, 4], "y": [1, 2, 3, 4], "z": [1, 2, 3, 4]})
+toy_string = pd.DataFrame({"x":["Yes", "No"], "y": [None, "Yes"], "z": ["No", "Yes"]})
 
 # Test data type
 print (toy_data)
@@ -36,7 +37,6 @@ def test_output_type():
     columns_2 = toy_all_na.columns.values
     columns_3 = toy_no_na.columns.values
     assert type(rp.replace_na(toy_data, columns_1)) == pd.DataFrame
-  
     assert type(rp.replace_na(toy_no_na, columns_3)) == pd.DataFrame
     
 # Test for the functionality of the function
@@ -55,6 +55,8 @@ def test_functionality():
     c = rp.replace_na(toy_no_na, columns_3) == no_na_result
     assert a.all(axis = None)
     assert c.all(axis = None)
+    with pytest.raises(KeyError):
+        rp.replace_na(toy_string, ["x"])
 
 # If the data frame contains all missing values(NAs)
 columns_2 = toy_all_na.columns.values
