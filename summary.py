@@ -36,15 +36,6 @@ def summary(data):
         noDupes = []
         [noDupes.append(i) for i in seq if not noDupes.count(i)]
         return noDupes
-    #find count of numbers that are not null or none
-    def count_num(vals):
-        length= 0
-        for item in vals:
-            if item is not None:
-                length += 1
-            else:
-                length += 0
-        return length
     
     def get_numeric_stats(column_data):
         col_df= pd.DataFrame(column_data)
@@ -70,7 +61,7 @@ def summary(data):
             "Unique"       : column_data.unique(), #could add counts of each word with countvectorizer
             "count"        : len(objcounts),
             "count_unique" : len(objcounts[objcounts != 0]),
-            "count_NAs"    : len(objcounts[objcounts == 0])
+            "count_NAs"    : column_data.isna().sum()
         }             
         return stats_dict
     
