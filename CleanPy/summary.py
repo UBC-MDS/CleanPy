@@ -32,9 +32,6 @@ def summary(data):
         count= 4
         count_NA= 0)
     """
-    # Remove np.median warnings
-    np.seterr(invalid='ignore')
-    
     # Find unique values in a list
     def unique(seq): 
         noDupes = []
