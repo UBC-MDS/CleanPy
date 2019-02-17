@@ -86,4 +86,5 @@ def summary(data):
         else: # assume everything else is Categorical Data Column
             summary_stats = get_categorical_stats(data[column])
         summary_dict[column] = summary_stats
+        
     return(pd.DataFrame(summary_dict))
