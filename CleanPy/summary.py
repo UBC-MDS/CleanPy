@@ -32,6 +32,8 @@ def summary(data):
         count= 4
         count_NA= 0)
     """
+    # Remove np.median warnings
+    np.seterr(invalid='ignore')
     
     # Find unique values in a list
     def unique(seq): 
@@ -46,11 +48,11 @@ def summary(data):
             "Unique"      :   column_data.unique(),
             "count"       :   column_data.count(),
             "count_NAs"   :   column_data.isna().sum(), #count_na(column_data), 
-            "count_unique":   len(column_data.unique()),
+            "count_unique":   np.count_nonzero((column_data.unique())),
             "min_"        :   np.min(column_data),
             "max_"        :   np.max(column_data),
             "mean"        :   np.mean(column_data),
-            "median"      :   np.median(column_data),
+            "median"      :   col_df.mean()[0]
         }
         return(stats_dict)
                 
@@ -59,7 +61,7 @@ def summary(data):
         objcounts = column_data.value_counts()
         count_unique = len(objcounts[objcounts != 0]) 
         stats_dict = {
-            "Unique"       : column_data.unique(), #could add counts of each word with countvectorizer
+            "Unique"       : column_data.unique(),
             "count"        : len(objcounts),
             "count_unique" : len(objcounts[objcounts != 0]),
             "count_NAs"    : column_data.isna().sum()

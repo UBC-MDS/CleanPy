@@ -14,16 +14,12 @@ toy_mixed_strings= pd.DataFrame({"x":[1,3,4,5], "y": ["Female", "Female", "Male"
 toy_mixed_data_type = pd.DataFrame({"x":[1,3,4,5], "y": ["Female", "Female", "Male", 22]}) #typo is 22
 numeric_data = pd.DataFrame({"y": [2, None, None], "z": [3.6, 8.5, 10]})
 
-simple_data = pd.DataFrame({"x":["a", "b", None], "y": [ None, 3, 3]})
-dict1= {"Unique":["a","b", None], "count" : 2, "count_NAs": 1, "count_unique": 2, "max_": 'NaN', "mean": 'NaN', "median": 'NaN', "min_": 'NaN'}
-dict2= {"Unique":['nan', 1.0, 3.0], "count" : 2, "count_NAs": 1, "count_unique": 2, "max_": 3, "mean": 2, "median": 'NaN', "min_": 1}
-summary_dict = {}
-summary_dict["x"] = dict1
-summary_dict["y"] = dict2
+simple_data = pd.DataFrame({"x":["a", "b", None], "y": [None, 1, 3]})
+dict1= {"Unique":simple_data["x"].unique(), "count" : 2, "count_NAs": 1, "count_unique": 2, "max_": np.nan, "mean": np.nan, "median": np.nan, "min_": np.nan}
+dict2= {"Unique":simple_data["y"].unique(), "count" : 2, "count_NAs": 1, "count_unique": 3, "max_": 3, "mean": 2, "median": 2, "min_": 1}
+summary_dict = {"x": dict1, "y": dict2}
 simple_answer= pd.DataFrame(summary_dict)
 
-def get_max_list(data):
-    return max(len(v) for k, v in data.items())
 
 # Test functions
 def test_data_type():
@@ -51,12 +47,13 @@ def test_output_shape():
     """
     Test that output has the correct shape. Can't have more output columns than data input columns
     """
-    assert (sm.summary(toy_data))[1] <= toy_data.shape[1]
+    assert sm.summary(toy_data).shape[1] <= toy_data.shape[1]
+    assert sm.summary(toy_all_na).shape[1] <= toy_all_na.shape[1]
    
     
 def test_summary_stats():
     '''
     Test that the summary statistics for numeric and categorical data are correct 
     '''
-    assert sm.summary(simple_data) == simple_answer
+    pd.util.testing.assert_frame_equal(sm.summary(simple_data), simple_answer)
     
