@@ -4,7 +4,7 @@ import pytest
 import sys
 sys.path.append("../../")
 
-import cleanpy as sm
+import CleanPy as sm
 
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})

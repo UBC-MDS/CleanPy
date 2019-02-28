@@ -1,1 +1,6 @@
-from . import locate_na, replace_na, summary
+name = "CleanPy"
+
+from CleanPy.locate_na import locate_na
+from CleanPy.replace_na import replace_na
+from CleanPy.summary import summary
+
