@@ -16,17 +16,38 @@ def get_max_list(data):
     return max(len(v) for k, v in data.items())
 
 # Test functions
-def test_data_type():
+def test_string_type():
     """
-    Thest that the function returns an error if 
-    the input type is incorrect
+    Test that the function returns an error if 
+    the input type is string
     """
     with pytest.raises(TypeError):
         cp.locate_na("Input Data")
+        
+def test_list_type():
+    """
+    Test that the function returns an error if 
+    the input type is list
+    """
+    with pytest.raises(TypeError):
         cp.locate_na([1, 2, 3, 4, 5])
+        
+def test_boolean_type():
+    """
+    Test that the function returns an error if 
+    the input type is boolean
+    """
+    with pytest.raises(TypeError):
         cp.locate_na(True)
-        cp.locate_na((True, "False"))
+        
+def test_dictionary_type():
+    """
+    Test that the function returns an error if 
+    the input type is dictionary
+    """
+    with pytest.raises(TypeError):
         cp.locate_na({"x":[1,2], "y":[3,4]})
+
         
 def test_output_type():
     """
