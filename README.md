@@ -104,7 +104,6 @@ def replace_na(data, columns, replace="mean", remove=False):
     """
 ```
 
-
 ## CleanPy and Python's Ecosystem
 Sometimes, it can get quite annoying  to go through your data line by line, and a quick summary of the data, will not only save you a lot of time but also give you a quick insight and overall picture of your data, which can be very useful to understand the task at hand. Python has a summary function called  `describe()` function from Python's `pandas.DataFrame`. CleanPy's `summary()` function will be quite similar to `describe()` but it will take it a step further and generate summary statistics, which will be presented in a very intuitive manner. The `summary()` function will also provide more information such as the number of missing values, and summaries of string information. In regards to our `locate_na()` and `replace_na()`, there is no similar function in existence in the current Python ecosystem that we are aware of. The only way to do them is to mannually combine a few functions including `pandas.DataFrame.isna()`.
 
@@ -118,6 +117,29 @@ Then you can import our packages using:
 ```
 from cleanpy import summary, locate_na, replace_na
 ```
+
+## Usage
+Let's assume that you have a dataframe like the following:
+```{python}
+toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 8.5, None]})
+```
+1. `summary`
+Arguments: 
+    - `data`: dataframe that the function will provide summary statistics on
+    - Example: `summary(toy_data)`
+  
+2. `locate_na`
+Arguments:
+    - `data`: dataframe that the function will use to locate NAs
+    - Example: `locate_na(toy_data)`
+
+3. `replace_na`
+Arguments:
+    - `data`: dataframe that the function will use to replace NAs
+    - `columns`: list of columns to replace missing values on
+    - `replace`: specifies how to replace missing values
+    - `remove`: tells the function whether or not to remove rows with NA
+    - Example: `replace_na(data, columns, replace="mean", remove=False)`
 
 ## Python Dependencies
 - Pandas

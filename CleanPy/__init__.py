@@ -1,5 +1,6 @@
-#!/usr/bin/env python
+name = "CleanPy"
 
-from cleanpy.summary import summary
-from cleanpy.locate_na import locate_na
-from cleanpy.replace_na import replace_na
+from CleanPy.locate_na import locate_na
+from CleanPy.replace_na import replace_na
+from CleanPy.summary import summary
+

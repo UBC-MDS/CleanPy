@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 import pytest
 import sys
-sys.path.append("../CleanPy")
+sys.path.append("../../")
 
-import replace_na as rp
+import CleanPy as rp
 
 # Helper codes
 toy_data = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, None]})
