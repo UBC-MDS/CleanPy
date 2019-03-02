@@ -22,10 +22,14 @@ def test_correct_input():
     """
     with pytest.raises(TypeError):
         rp.replace_na("Input Data")
-        #rp.replace_na([1, 2, 3, 4, 5])
-        #rp.replace_na(True)
-        #rp.replace_na((True, "False"))
-        #rp.replace_na({"x":[1,2], "y":[3,4]})
+    with pytest.raises(KeyError):
+        rp.replace_na([1, 2, 3, 4, 5])
+    with pytest.raises(KeyError):
+        rp.replace_na(True)
+    with pytest.raises(KeyError):
+        rp.replace_na((True, "False"))
+    with pytest.raises(KeyError):
+        rp.replace_na({"x":[1,2], "y":[3,4]})
         
 # Test output type
 
