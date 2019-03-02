@@ -36,7 +36,8 @@ def replace_na(data, columns, replace="mean", remove=False):
     
     # Return error if data has only missing values
     if data.isna().all(axis = None):
-        raise TypeError("Input must not be all missing values.")
+        #raise TypeError("Input must not be all missing values.")
+        return TypeError("Input must not be all missing values.")
     
     # Return error if the data argument is a dataframe
     if not isinstance(data, pd.DataFrame):
