@@ -40,7 +40,7 @@ def replace_na(data, columns, replace="mean", remove=False):
     
     # Return error if the data argument is a dataframe
     if not isinstance(data, pd.DataFrame):
-        raise TypeError("Input date must be a pandas dataframe.")
+        raise TypeError("Input data must be a pandas dataframe.")
         
     # Return error if the columns argument is a list
     if not (isinstance(columns, list) or isinstance(columns, np.ndarray)) :
@@ -68,4 +68,17 @@ def replace_na(data, columns, replace="mean", remove=False):
             max_ = data[i].max()
             z = data.fillna({i: max_})
     return z
-   
+###
+def replace_na(data, columns, replace="min", remove=False):
+    for i in columns:
+        if not (data[i].dtypes == 'float64' or data[i].dtypes == 'int64'):
+            raise KeyError("Please make sure the column you are replacing is numeric.")
+
+    elif replace=="min":
+        for i in columns:
+            min_ = data[i].min()
+            z= z.fillna({i: min_})
+    return z
+    
+    
+    
