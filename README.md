@@ -14,12 +14,13 @@ CleanPy is especially developed to create a streamlined process to give you an e
 ```
 def summary(data):
     """
-    This function computes summary statistics for text and numerical column_data from a given column_dataframe.
+    This function computes summary statistics for text and numerical column data from a given dataframe.
     Input: dictionary or column_dataframe
-    Returns summary statistics for each column in a nested pandas column_dataframe. Since pandas only accepts one data type per column, 
-    we only need to test the type of each column once.
+    Returns summary statistics for each column in a nested pandas dataframe. Since pandas only accepts one 
+    data type  per column, we only need to test the type of each column once.
     It will perform two different summary statistics based on 2 column_datatypes of either
-    1) string/bool or 2) int/float/datetime object. For numeric data columns it returns a dictionary of summary statistics including
+    1) string/bool or 2) int/float/datetime object. 
+    For numeric data columns it returns a dictionary of summary statistics including
     mean value for each column, min, max, mean, median and count (number of non NA values per column) and count_NA
     (number of NA values per column). Similarly, for string columns it returns the unique string values and
     their counts in a dictionary. The column summary statistics are then nested into a pandas dataframe and returned.
@@ -32,7 +33,7 @@ def summary(data):
     Returns
     -------
     Summary pandas dataframe of each column's summary statistics
-    >>> summary(pd.column_dataFrame(colnames="Likes coding", rows= np.array([[4,3,2, 2])))
+    >>> summary(pd.column_dataFrame(colnames="Likes coding", rows= np.array([[4,3,2,2])))
     pd.DataFrame(
         min= 2
         max= 4
