@@ -68,6 +68,6 @@ def replace_na(data, columns, replace="mean", remove=False):
             max_ = data[i].max()
             z = data.fillna({i: max_})
     return z
-
+##
 
     
