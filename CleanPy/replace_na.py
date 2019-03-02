@@ -55,18 +55,18 @@ def replace_na(data, columns, replace="mean", remove=False):
         for i in columns:
             mean = data[i].mean()
             z = z.fillna({i: mean})
-    elif replace=="min":
-        for i in columns:
-            min_ = data[i].min()
-            z= z.fillna({i: min_})
-    elif replace=="median":
-        for i in columns:
-            median = data[i].median()
-            z = data.fillna({i: median})
-    elif replace=="max":
-        for i in columns:
-            max_ = data[i].max()
-            z = data.fillna({i: max_})
+    #elif replace=="min":
+        #for i in columns:
+            #min_ = data[i].min()
+            #z= z.fillna({i: min_})
+    #elif replace=="median":
+        #for i in columns:
+            #median = data[i].median()
+            #z = data.fillna({i: median})
+    #elif replace=="max":
+        #for i in columns:
+            #max_ = data[i].max()
+            #z = data.fillna({i: max_})
     return z
 #
 
