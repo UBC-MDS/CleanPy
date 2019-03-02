@@ -65,15 +65,5 @@ def test_input_contains_all_missingvalues():
           rp.replace_na(toy_all_na, columns_2)
 ##
 
-my_data = pd.DataFrame({"x":[None, 6, 8], "y": [2, None, None], "z": [5, 10, None]})
-
-
-replace_na(my_data, np.array(["x","y","z"]) , replace="mean", remove=False)
-
-replace_na(my_data, np.array(["x","y","z"]) , replace="min", remove=False)
-
-replace_na(my_data, np.array(["x","y","z"]) , replace="median", remove=False)
-
-replace_na(my_data, np.array(["x","y","z"]) , replace="max", remove=False)
 
     
