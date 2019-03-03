@@ -22,13 +22,13 @@ def test_correct_input():
     """
     with pytest.raises(TypeError):
         rp.replace_na("Input Data")
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         rp.replace_na([1, 2, 3, 4, 5])
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         rp.replace_na(True)
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         rp.replace_na((True, "False"))
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         rp.replace_na({"x":[1,2], "y":[3,4]})
         
 # Test output type
@@ -68,6 +68,6 @@ def test_input_contains_all_missingvalues():
     with pytest.raises(TypeError):
           rp.replace_na(toy_all_na, columns_2)
 
-#
+##
 
     
