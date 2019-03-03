@@ -59,15 +59,22 @@ def test_functionality():
     c = rp.replace_na(toy_no_na, columns_3) == no_na_result
     assert a.all(axis = None)
     assert c.all(axis = None)
+    assert rp.replace_na(toy_data) == toy_result
+    assert rp.replace_na(toy_all_na) == all_na_result
+    assert rp.replace_na(toy_no_na) == no_na_result
     with pytest.raises(KeyError):
         rp.replace_na(toy_string, ["x"])
-
+    
+    
+    
+   
+    
 # If the data frame contains all missing values(NAs)
 columns_2 = toy_all_na.columns.values
 def test_input_contains_all_missingvalues():
     with pytest.raises(TypeError):
           rp.replace_na(toy_all_na, columns_2)
 
-##
+
 
     
