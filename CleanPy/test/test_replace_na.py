@@ -64,10 +64,14 @@ def test_functionality():
     #assert rp.replace_na(toy_no_na) == no_na_result
     with pytest.raises(KeyError):
         rp.replace_na(toy_string, ["x"])
-    
-    
-    
-   
+
+def test_replace_method():
+    toy_result_min = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 3.6]})
+    toy_result_max = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 8.5]})
+    toy_result_median = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 6.05]})
+    assert(rp.replace_na(toy_data, columns=["z"], "min")==toy_result_min)
+    assert(rp.replace_na(toy_data, columns=["z"], "max")==toy_result_max)
+    assert(rp.replace_na(toy_data, columns=["z"], "median")==toy_result_median)
     
 # If the data frame contains all missing values(NAs)
 columns_2 = toy_all_na.columns.values
