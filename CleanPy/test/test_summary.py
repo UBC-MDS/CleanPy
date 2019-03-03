@@ -24,14 +24,35 @@ simple_answer= pd.DataFrame(summary_dict)
 def test_data_type():
     """
     Test input data type, and that the function returns an error if 
-    the input type is incorrect
+    the input type is incorrect- a string
     """
     with pytest.raises(NotImplementedError):
         sm.summary("Input Data")
+        
+def test_data_type2():
+    """
+    Test input data type, and that the function returns an error if 
+    the input type is incorrect- a list
+    """
+    with pytest.raises(NotImplementedError):
         sm.summary([1, 2, 3, 4, 5])
+       
+     
+def test_data_type3():
+    """
+    Test input data type, and that the function returns an error if 
+    the input type is incorrect- boolean
+    """
+    with pytest.raises(NotImplementedError):
         sm.summary(True)
+        
+def test_data_type4():
+    """
+    Test input data type, and that the function returns an error if 
+    the input type is incorrect- list of bool and string
+    """
+    with pytest.raises(NotImplementedError):
         sm.summary((True, "False"))
-        #sm.summary({"x":[1,2], "y":[3,4]})
         
 def test_output_type():
     """
