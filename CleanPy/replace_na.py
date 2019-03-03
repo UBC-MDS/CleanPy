@@ -32,15 +32,13 @@ def replace_na(data, columns, replace="mean", remove=False):
     >>> replace_na(pd.DataFrame(np.array([[0, 1], [NA, 1]])), replace="min", columns=[0])
     pd.DataFrame(np.array([[0, 1], [0, 1]]))
     """
-    z = data.copy()
-
-    # Return error if data has only missing values
-    if data.isna().all(axis = None):
-        raise TypeError("Input must not be all missing values.")
-
     # Return error if the data argument is a dataframe
     if not isinstance(data, pd.DataFrame):
         raise TypeError("Input data must be a pandas dataframe.")
+    
+    # Return error if data has only missing values
+    if data.isna().all(axis = None):
+        raise TypeError("Input must not be all missing values.")
 
     # Return error if the columns argument is a list
     if not (isinstance(columns, list) or isinstance(columns, np.ndarray)) :
@@ -50,7 +48,8 @@ def replace_na(data, columns, replace="mean", remove=False):
     for i in columns:
         if not (data[i].dtypes == 'float64' or data[i].dtypes == 'int64'):
             raise KeyError("Please make sure the column you are replacing is numeric.")
-
+            
+    z = data.copy()
     if replace=="mean":
         for i in columns:
             mean = data[i].mean()
