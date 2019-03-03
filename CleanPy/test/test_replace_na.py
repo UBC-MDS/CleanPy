@@ -22,9 +22,13 @@ def test_correct_input():
     """
     with pytest.raises(TypeError):
         rp.replace_na("Input Data")
+    with pytest.raises(TypeError):
         rp.replace_na([1, 2, 3, 4, 5])
+    with pytest.raises(TypeError):
         rp.replace_na(True)
+    with pytest.raises(TypeError):
         rp.replace_na((True, "False"))
+    with pytest.raises(TypeError):
         rp.replace_na({"x":[1,2], "y":[3,4]})
         
 # Test output type
@@ -58,9 +62,20 @@ def test_functionality():
     with pytest.raises(KeyError):
         rp.replace_na(toy_string, ["x"])
 
+def test_replace_method():
+    toy_result_min = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 3.6]})
+    toy_result_max = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 8.5]})
+    toy_result_median = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 6.05]})
+    assert(rp.replace_na(toy_data, columns=["z"], replace="min")==toy_result_min)
+    assert(rp.replace_na(toy_data, columns=["z"], replace="max")==toy_result_max)
+    assert(rp.replace_na(toy_data, columns=["z"], replace="median")==toy_result_median)
+    
 # If the data frame contains all missing values(NAs)
 columns_2 = toy_all_na.columns.values
 def test_input_contains_all_missingvalues():
     with pytest.raises(TypeError):
           rp.replace_na(toy_all_na, columns_2)
+
+
+
     

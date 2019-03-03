@@ -37,10 +37,10 @@ def replace_na(data, columns, replace="mean", remove=False):
     # Return error if data has only missing values
     if data.isna().all(axis = None):
         raise TypeError("Input must not be all missing values.")
-    
+        
     # Return error if the data argument is a dataframe
     if not isinstance(data, pd.DataFrame):
-        raise TypeError("Input date must be a pandas dataframe.")
+        raise TypeError("Input data must be a pandas dataframe.")
         
     # Return error if the columns argument is a list
     if not (isinstance(columns, list) or isinstance(columns, np.ndarray)) :
@@ -68,4 +68,6 @@ def replace_na(data, columns, replace="mean", remove=False):
             max_ = data[i].max()
             z = data.fillna({i: max_})
     return z
-   
+##
+
+    
