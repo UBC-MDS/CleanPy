@@ -54,6 +54,24 @@ def test_data_type4():
     with pytest.raises(NotImplementedError):
         sm.summary((True, "False"))
         
+def test_data_type5():
+    """
+    Test input data type, and that the function returns an error if 
+    the input type is incorrect- data is a 3d dataframe
+    """
+    C = [[7,11,56,45], [20,21,74,12], [42], [52], [90,213,9], [101, 34, 45]]
+    C = np.array(C)
+    df = pd.DataFrame(data=C.T, columns=pd.MultiIndex.from_tuples(zip(A,B)))
+    
+def test_data_not_empty():
+    """
+    Test that the inout data is not an empty df
+    """
+    empty_df = pd.DataFrame()
+    with pytest.raises(ValueError):
+        sm.summary(empty_df)
+        
+        
 def test_output_type():
     """
     Test that the output type must be a dataframe 

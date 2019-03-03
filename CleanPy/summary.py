@@ -25,18 +25,13 @@ def summary(data):
     Summary pandas dataframe of each column's summary statistics
     >>> summary(pd.column_dataFrame(colnames="Likes coding", rows= np.array([[4,3,2, 2])))
     pd.DataFrame(
-        min= 2
-        max= 4
-        mean= 11/4
-        median= 2
+        min = 2
+        max = 4
+        mean = 11/4
+        median = 2
         count= 4
         count_NA= 0)
     """
-    # Find unique values in a list
-    def unique(seq): 
-        noDupes = []
-        [noDupes.append(i) for i in seq if not noDupes.count(i)]
-        return noDupes
     
     def get_numeric_stats(column_data):
         col_df= pd.DataFrame(column_data)
@@ -68,11 +63,10 @@ def summary(data):
     # Check that input is a pandas df 
     if isinstance(data, pd.DataFrame) == False:
         raise NotImplementedError("Input should be a pandas dataframe. Use pd.DataFrame(data)")
-    # Check dimensions
-    if data.ndim >= 3:
-        msg = "Summary is not implemented on Panel objects."
-        raise NotImplementedError(msg)
-    elif data.ndim == 2 and data.columns.size == 0:
+    # Check dimensions 
+    
+    #check that dataframe is not empty
+    if (data.ndim == 2 and data.columns.size == 0):
         raise ValueError("Cannot describe a column_dataFrame without columns")
     
     # Find data type in each column of input data
