@@ -42,7 +42,3 @@ def locate_na(data):
     except TypeError:
         print("Input data type is not of type pd.DataFrame.")
         raise
-#    except Exception as error:
-#        print(error)
-#        print("The locate_na function was not executed.")
-#        raise
