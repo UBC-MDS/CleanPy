@@ -141,6 +141,34 @@ Arguments:
     - `replace`: specifies how to replace missing values
     - `remove`: tells the function whether or not to remove rows with NA
     - Example: `replace_na(data, columns, replace="mean", remove=False)`
+    
+## Branch Coverage
+You can install the coverage package in r with the following code:
+```
+pip install coverage
+```
+To get the branch coverage of the package, type the following into r console:
+```
+coverage run -m --branch pytest -q; coverage report -m
+
+# If you want to view it interactively
+coverage html
+```
+
+The coverage results are shown below:
+```
+Name                              Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------------
+CleanPy/__init__.py                   4      0      0      0   100%
+CleanPy/locate_na.py                 20      0     12      0   100%
+CleanPy/replace_na.py                30      0     26      0   100%
+CleanPy/summary.py                   25      0      8      0   100%
+CleanPy/test/test_locate_na.py       40      0      2      0   100%
+CleanPy/test/test_replace_na.py      49      0      0      0   100%
+CleanPy/test/test_summary.py         46      0      0      0   100%
+-----------------------------------------------------------------------------
+TOTAL                               214      0     48      0   100%
+```
 
 ## Python Dependencies
 - Pandas
