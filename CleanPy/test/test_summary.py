@@ -61,7 +61,7 @@ def test_data_type5():
     """
     C = [[7,11,56,45], [20,21,74,12], [42], [52], [90,213,9], [101, 34, 45]]
     C = np.array(C)
-    df = pd.DataFrame(data=C.T, columns=pd.MultiIndex.from_tuples(zip(A,B)))
+    df = pd.DataFrame(data=C.T)
     
 def test_data_not_empty():
     """

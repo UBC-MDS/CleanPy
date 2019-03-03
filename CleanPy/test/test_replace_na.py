@@ -21,17 +21,14 @@ def test_correct_input():
     the input type is wrong
     """
     with pytest.raises(TypeError):
-        rp.replace_na("Input Data")
-    with pytest.raises(TypeError):
-        rp.replace_na([1, 2, 3, 4, 5])
-    with pytest.raises(TypeError):
-        rp.replace_na(True)
-    with pytest.raises(TypeError):
-        rp.replace_na((True, "False"))
-    with pytest.raises(TypeError):
-        rp.replace_na({"x":[1,2], "y":[3,4]})
+        rp.replace_na("Input Data", columns="x")
 
-# Test output type
+def test_column_type():
+    """
+    Test that incorrect column raises Type Error
+    """
+    with pytest.raises(TypeError):
+        rp.replace_na(toy_string, columns="x")
 
 def test_output_type():
     """
@@ -63,19 +60,31 @@ def test_functionality():
         rp.replace_na(toy_string, ["x"])
 
 def test_replace_min():
+    """
+    Test functionality of replace=min
+    """
     toy_result_min = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 3.6]})
-    assert(rp.replace_na(toy_data, columns=["z"], replace="min")==toy_result_min)
-
+    pd.util.testing.assert_frame_equal(rp.replace_na(toy_data, columns=["z"], replace="min"), toy_result_min) 
+    
 def test_replace_max():
+    """
+    Test functionality of replace=max
+    """
     toy_result_max = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 8.5]})
-    assert(rp.replace_na(toy_data, columns=["z"], replace="max")==toy_result_max)
+    pd.util.testing.assert_frame_equal(rp.replace_na(toy_data, columns=["z"], replace="max"), toy_result_max)
 
 def test_replace_median():
+    """
+    Test functionality of replace=median
+    """
     toy_result_median = pd.DataFrame({"x":[None, 4, 6], "y": [2, None, None], "z": [3.6, 8.5, 6.05]})
-    assert(rp.replace_na(toy_data, columns=["z"], replace="median")==toy_result_median)
+    pd.util.testing.assert_frame_equal(rp.replace_na(toy_data, columns=["z"], replace="median"), toy_result_median)
     
 # If the data frame contains all missing values(NAs)
 columns_2 = toy_all_na.columns.values
 def test_input_contains_all_missingvalues():
+    """
+    Raise Type Error if all values are missing
+    """
     with pytest.raises(TypeError):
           rp.replace_na(toy_all_na, columns_2)
