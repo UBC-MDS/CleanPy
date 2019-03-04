@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 
-def locate_na(data):
+def locate_na(data: pd.DataFrame) -> dict:
     """ 
     Locate and return the indices to all missing values within an inputted dataframe. 
     Each element of the returned dictionary will be a column in a dataframe, which will 
@@ -28,9 +28,9 @@ def locate_na(data):
     try:
         if not isinstance(data, pd.DataFrame):
             raise(TypeError)
-        col_na = {}
+        col_na: dict = {}
         for i in data:
-            row_na = []
+            row_na: list = []
             for j in range(len(data[i])):
                 if (pd.isna(data[i][j])):
                     row_na.append(j)
