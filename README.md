@@ -118,7 +118,7 @@ pip install git+https://github.com/UBC-MDS/CleanPy.git
 
 Then you can import our packages using:
 ```
-from cleanpy import summary, locate_na, replace_na
+from CleanPy import summary, locate_na, replace_na
 ```
 
 ## Usage
@@ -130,11 +130,15 @@ toy_data = pd.DataFrame({"x":[None, "b", "c"], "y": [2, None, None], "z": [3.6, 
 Arguments:
     - `data`: dataframe that the function will provide summary statistics on
     - Example: `summary(toy_data)`
+    - Output: <p align="left">
+    <img src="./images/summary_output.png">
+    </p>
 
 2. `locate_na`
 Arguments:
     - `data`: dataframe that the function will use to locate NAs
     - Example: `locate_na(toy_data)`
+    - Output: `{'x': [0], 'y': [1, 2], 'z': [2]}`
 
 3. `replace_na`
 Arguments:
@@ -142,7 +146,10 @@ Arguments:
     - `columns`: list of columns to replace missing values on
     - `replace`: specifies how to replace missing values
     - `remove`: tells the function whether or not to remove rows with NA
-    - Example: `replace_na(data, columns, replace="mean", remove=False)`
+    - Example: `replace_na(toy_data, columns=["y"], replace="mean", remove=False)`
+    - Output: <p align="left">
+    <img src="./images/replace_output.png">
+    </p>
 
 ## Branch Coverage
 You can install the coverage package in r with the following code:
