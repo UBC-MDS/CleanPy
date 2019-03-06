@@ -152,11 +152,11 @@ Arguments:
     </p>
 
 ## Branch Coverage
-You can install the coverage package in r with the following code:
+You can install the coverage package in terminal/command prompt with the following code:
 ```
 pip install coverage
 ```
-To get the branch coverage of the package, type the following into r console:
+To get the branch coverage of the package, type the following at the root of the folder:
 ```
 coverage run -m --branch pytest -q; coverage report -m
 
