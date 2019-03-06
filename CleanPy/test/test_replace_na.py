@@ -58,7 +58,14 @@ def test_functionality():
     assert c.all(axis = None)
     with pytest.raises(KeyError):
         rp.replace_na(toy_string, ["x"])
-
+           
+def test_remove_nas_nona():
+    """
+    Test functionality of remove=True but dataframe has no nas
+    """
+    #return same dataframe
+    pd.util.testing.assert_frame_equal(rp.replace_na(toy_no_na, columns=["y"], remove=True), toy_no_na) 
+    
 def test_replace_min():
     """
     Test functionality of replace=min

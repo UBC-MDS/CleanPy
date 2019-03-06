@@ -43,7 +43,9 @@ def replace_na(data, columns, replace="mean", remove=False):
     # Return error if the columns argument is a list
     if not (isinstance(columns, list) or isinstance(columns, np.ndarray)) :
         raise TypeError("Please make sure the column(s) you would like to replace is a list or numpy array type.")
-
+    # Remove rows with nas for categorical and numerical data
+    if remove == True:
+        return data.dropna(subset= columns)
     # Return error if columns have numeric types
     for i in columns:
         if not (data[i].dtypes == 'float64' or data[i].dtypes == 'int64'):
