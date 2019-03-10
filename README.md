@@ -4,7 +4,7 @@
 This package cleans a dataset and returns summary statistics as well as number, proportion and location of NA values for string and number column inputs. Data cleaning made easy!
 
 ### Collaborators
-Heather Van Tassel, Phuntsok Tseten, Patrick Tung
+[Heather Van Tassel](https://github.com/heathervant), [Phuntsok Tseten](https://github.com/UBC-MDS/CleanPy/commits?author=phuntsoktseten), [Patrick Tung](https://github.com/tungpatrick)
 
 ## Overview
 There is a dire need for a good data cleaning package, and we are trying to develop our version of a good data cleaning package that will help users clean their data in a meaningful way. Data cleaning is usually the first step in any data science problem, and if you don’t clean your data well, it might be really difficult to proceed further. So our motivation for coming up with this idea was to address this very issue of messy data.
@@ -37,12 +37,13 @@ def summary(data):
     Summary pandas dataframe of each column's summary statistics
     >>> summary(pd.column_dataFrame(colnames="Likes coding", rows= np.array([[4,3,2,2])))
     pd.DataFrame(
-        min= 2
-        max= 4
-        mean= 11/4
-        median= 2
-        count= 4
-        count_NA= 0)
+        "unique" = [4,3,2]
+        "min"= 2
+        "max"= 4
+        "mean"= 11/4
+        "median"= 2
+        "count"= 4
+        "count_NA"= 0)
     """
 ```
 

@@ -32,6 +32,22 @@ def replace_na(data, columns, replace="mean", remove=False):
     >>> replace_na(pd.DataFrame(np.array([[0, 1], [NA, 1]])), replace="min", columns=[0])
     pd.DataFrame(np.array([[0, 1], [0, 1]]))
     """
+    try:
+        import pandas as pd
+    except ImportError:
+           # Give a nice error message
+        raise ImportError("the pandas library is not installed\n"
+                             "you can install via conda\n"
+                             "conda install pandas\n"
+                             "or: python -m pip install pandas\n")
+    try:
+        import numpy as np
+    except ImportError:
+           # Give a nice error message
+        raise ImportError("the numpy library is not installed\n"
+                             "you can install via conda\n"
+                             "conda install numpy\n")
+        
     # Return error if the data argument is a dataframe
     if not isinstance(data, pd.DataFrame):
         raise TypeError("Input data must be a pandas dataframe.")
