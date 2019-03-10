@@ -26,6 +26,22 @@ def locate_na(data: pd.DataFrame) -> dict:
     {"0": [1], "2": [0]}
     """
     try:
+        import pandas as pd
+    except ImportError:
+           # Give a nice error message
+        raise ImportError("the pandas library is not installed\n"
+                             "you can install via conda\n"
+                             "conda install pandas\n"
+                             "or: python -m pip install pandas\n")
+    try:
+        import numpy as np
+    except ImportError:
+           # Give a nice error message
+        raise ImportError("the numpy library is not installed\n"
+                             "you can install via conda\n"
+                             "conda install numpy\n")
+        
+    try:
         if not isinstance(data, pd.DataFrame):
             raise(TypeError)
         col_na: dict = {}

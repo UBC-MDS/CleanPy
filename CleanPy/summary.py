@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import pandas as pd
-import numpy as np
 
 def summary(data):
     """
@@ -32,6 +30,23 @@ def summary(data):
         count= 4
         count_NA= 0)
     """
+    
+    try:
+        import pandas as pd
+    except ImportError:
+           # Give a nice error message
+        raise ImportError("the pandas library is not installed\n"
+                             "you can install via conda\n"
+                             "conda install numpy\n"
+                             "or: python -m pip install pandas\n")
+    try:
+        import numpy as np
+    except ImportError:
+           # Give a nice error message
+        raise ImportError("the numpy library is not installed\n"
+                             "you can install via conda\n"
+                             "conda install numpy\n")
+                            
     
     def get_numeric_stats(column_data):
         col_df= pd.DataFrame(column_data)
