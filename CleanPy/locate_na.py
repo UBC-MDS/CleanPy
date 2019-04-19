@@ -25,6 +25,7 @@ def locate_na(data: pd.DataFrame) -> dict:
     >>> locate_na(pd.DataFrame(np.array([[1, 2, None], [None, 2, 3]])))
     {"0": [1], "2": [0]}
     """
+    # testing code
     try:
         import pandas as pd
     except ImportError:
